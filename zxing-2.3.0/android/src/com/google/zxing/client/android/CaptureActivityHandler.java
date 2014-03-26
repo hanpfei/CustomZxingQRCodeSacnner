@@ -38,6 +38,8 @@ import android.util.Log;
 import java.util.Collection;
 import java.util.Map;
 
+import com.hanpfei.zxingqrcodescanner.R;
+
 /**
  * This class handles all the messaging which comprises the state machine for capture.
  *

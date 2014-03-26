@@ -25,8 +25,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
-import com.google.zxing.client.android.PreferencesActivity;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -92,17 +90,6 @@ final class CameraConfigurationManager {
     initializeTorch(parameters, prefs, safeMode);
 
     String focusMode = null;
-    if (prefs.getBoolean(PreferencesActivity.KEY_AUTO_FOCUS, true)) {
-      if (safeMode || prefs.getBoolean(PreferencesActivity.KEY_DISABLE_CONTINUOUS_FOCUS, false)) {
-        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-                                      Camera.Parameters.FOCUS_MODE_AUTO);
-      } else {
-        focusMode = findSettableValue(parameters.getSupportedFocusModes(),
-                                      Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE,
-                                      Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO,
-                                      Camera.Parameters.FOCUS_MODE_AUTO);
-      }
-    }
     // Maybe selected auto-focus but not available, so fall through here:
     if (!safeMode && focusMode == null) {
       focusMode = findSettableValue(parameters.getSupportedFocusModes(),
@@ -111,14 +98,6 @@ final class CameraConfigurationManager {
     }
     if (focusMode != null) {
       parameters.setFocusMode(focusMode);
-    }
-
-    if (prefs.getBoolean(PreferencesActivity.KEY_INVERT_SCAN, false)) {
-      String colorMode = findSettableValue(parameters.getSupportedColorEffects(),
-                                           Camera.Parameters.EFFECT_NEGATIVE);
-      if (colorMode != null) {
-        parameters.setColorEffect(colorMode);
-      }
     }
 
     parameters.setPreviewSize(cameraResolution.x, cameraResolution.y);

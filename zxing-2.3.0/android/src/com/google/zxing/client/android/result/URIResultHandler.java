@@ -17,13 +17,14 @@
 package com.google.zxing.client.android.result;
 
 import com.google.zxing.client.android.LocaleManager;
-import com.google.zxing.client.android.R;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.URIParsedResult;
 
 import android.app.Activity;
 
 import java.util.Locale;
+
+import com.hanpfei.zxingqrcodescanner.R;
 
 /**
  * Offers appropriate actions for URLS.
@@ -74,9 +75,6 @@ public final class URIResultHandler extends ResultHandler {
         break;
       case 2:
         shareBySMS(uri);
-        break;
-      case 3:
-        searchBookContents(uri);
         break;
     }
   }

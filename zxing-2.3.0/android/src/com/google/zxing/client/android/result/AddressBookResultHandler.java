@@ -16,7 +16,6 @@
 
 package com.google.zxing.client.android.result;
 
-import com.google.zxing.client.android.R;
 import com.google.zxing.client.result.AddressBookParsedResult;
 import com.google.zxing.client.result.ParsedResult;
 
@@ -31,6 +30,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import com.hanpfei.zxingqrcodescanner.R;
 
 /**
  * Handles address book entries.

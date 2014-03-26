@@ -20,9 +20,6 @@ import com.google.zxing.Result;
 import com.google.zxing.client.android.Contents;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.client.android.LocaleManager;
-import com.google.zxing.client.android.PreferencesActivity;
-import com.google.zxing.client.android.R;
-import com.google.zxing.client.android.book.SearchBookContentsActivity;
 import com.google.zxing.client.result.ParsedResult;
 import com.google.zxing.client.result.ParsedResultType;
 import com.google.zxing.client.result.ResultParser;
@@ -40,6 +37,8 @@ import android.util.Log;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Locale;
+
+import com.hanpfei.zxingqrcodescanner.R;
 
 /**
  * A base class for the Android-specific barcode handlers. These allow the app to polymorphically
@@ -386,13 +385,6 @@ public abstract class ResultHandler {
     launchIntent(new Intent(Intent.ACTION_VIEW, uri));
   }
 
-  final void searchBookContents(String isbnOrUrl) {
-    Intent intent = new Intent(Intents.SearchBookContents.ACTION);
-    intent.setClassName(activity, SearchBookContentsActivity.class.getName());
-    putExtra(intent, Intents.SearchBookContents.ISBN, isbnOrUrl);
-    launchIntent(intent);
-  }
-
   final void openURL(String url) {
     // Strangely, some Android browsers don't seem to register to handle HTTP:// or HTTPS://.
     // Lower-case these as it should always be OK to lower-case these schemes.
@@ -451,9 +443,6 @@ public abstract class ResultHandler {
   }
 
   private String parseCustomSearchURL() {
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
-    String customProductSearch = prefs.getString(PreferencesActivity.KEY_CUSTOM_PRODUCT_SEARCH,
-        null);
     if (customProductSearch != null && customProductSearch.trim().isEmpty()) {
       return null;
     }

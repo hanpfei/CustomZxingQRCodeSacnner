@@ -31,6 +31,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hanpfei.zxingqrcodescanner.R;
+
 /**
  * This view is overlaid on top of the camera preview. It adds the viewfinder rectangle and partial
  * transparency outside it, as well as the laser scanner animation and result points.

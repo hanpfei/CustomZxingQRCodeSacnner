@@ -41,8 +41,6 @@ public final class ResultHandlerFactory {
         return new ProductResultHandler(activity, result, rawResult);
       case URI:
         return new URIResultHandler(activity, result);
-      case WIFI:
-        return new WifiResultHandler(activity, result);
       case GEO:
         return new GeoResultHandler(activity, result);
       case TEL:
@@ -51,8 +49,6 @@ public final class ResultHandlerFactory {
         return new SMSResultHandler(activity, result);
       case CALENDAR:
         return new CalendarResultHandler(activity, result);
-      case ISBN:
-        return new ISBNResultHandler(activity, result, rawResult);
       default:
         return new TextResultHandler(activity, result, rawResult);
     }

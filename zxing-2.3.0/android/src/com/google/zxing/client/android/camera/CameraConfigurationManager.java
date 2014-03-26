@@ -111,6 +111,7 @@ final class CameraConfigurationManager {
       cameraResolution.x = afterSize.width;
       cameraResolution.y = afterSize.height;
     }
+    camera.setDisplayOrientation(90);
   }
 
   Point getCameraResolution() {

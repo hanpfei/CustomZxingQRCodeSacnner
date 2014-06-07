@@ -39,7 +39,7 @@ public class PalletteView extends View implements OnClickListener {
         setOnClickListener(this);
         mPallette = new int[PALLETTE_LENGTH];
         for (int i = 0; i < PALLETTE_LENGTH; ++i) {
-            mPallette[i] = ((PALLETTE_LENGTH - 1 - i) << 8) + i;
+            mPallette[i] = ((PALLETTE_LENGTH - 1 - i) << 8) + i + 0xFF000000;
         }
     }
 

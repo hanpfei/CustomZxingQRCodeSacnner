@@ -28,6 +28,7 @@ public class ModeSwitcher extends View implements OnTouchListener {
 
     private static final int[] MODE_LABEL_IDS = { 
         R.string.camera_mode,
+        R.string.measure_mode,
         R.string.scan_mode, 
     };
 

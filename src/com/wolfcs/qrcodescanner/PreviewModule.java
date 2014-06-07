@@ -26,6 +26,7 @@ public class PreviewModule implements OnClickListener,
     private ImageView mPreviewButton;
 
     private CameraModule mCameraModule;
+    private MeasureModule mMeasureModule;
     private ScanModule mScanModule;
     private ImagerModule mCurrentImageModule;
 
@@ -54,6 +55,8 @@ public class PreviewModule implements OnClickListener,
         ImageView shutterButton = (ImageView) mRootView.findViewById(R.id.shutter_button);
         shutterButton.setOnClickListener(this);
 
+        mMeasureModule = new MeasureModule(mActivity, mRootView);
+
         mCameraModule = new CameraModule(activity, mRootView);
         mScanModule = new ScanModule(mActivity, mRootView);
 
@@ -78,6 +81,9 @@ public class PreviewModule implements OnClickListener,
         switch (index) {
         case ModeSwitcher.CAMERA_MODE_INDEX:
             newImageModule = mCameraModule;
+            break;
+        case ModeSwitcher.MEASURE_MODE_INDEX:
+            newImageModule = mMeasureModule;
             break;
         case ModeSwitcher.SCAN_MODE_INDEX:
             newImageModule = mScanModule;
@@ -124,6 +130,9 @@ public class PreviewModule implements OnClickListener,
         switch (i) {
         case ModeSwitcher.CAMERA_MODE_INDEX:
             selectMode(ModeSwitcher.CAMERA_MODE_INDEX);
+            break;
+        case ModeSwitcher.MEASURE_MODE_INDEX:
+            selectMode(ModeSwitcher.MEASURE_MODE_INDEX);
             break;
         case ModeSwitcher.SCAN_MODE_INDEX:
             selectMode(ModeSwitcher.SCAN_MODE_INDEX);

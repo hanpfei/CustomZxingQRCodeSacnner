@@ -15,7 +15,7 @@ import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 
-public class ThermalImagerUtils {
+public class ImagerUtils {
 
     /**
      * Calculate the default orientation of the device based on the width and

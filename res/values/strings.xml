@@ -25,6 +25,7 @@
     <string name="select_all">Select all</string>
 
     <string name="camera_mode">Camera</string>
+    <string name="measure_mode">Measuring</string>
     <string name="scan_mode">Scan</string>
     <string name="about_settings">About</string>
     <string name="language">Language</string>

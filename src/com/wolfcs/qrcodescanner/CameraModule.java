@@ -64,7 +64,7 @@ public class CameraModule implements ImagerModule, OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.c_settings:
-                ThermalImagerUtils.startSettingActivity(mActivity);
+                ImagerUtils.startSettingActivity(mActivity);
                 break;
             default:
                 break;

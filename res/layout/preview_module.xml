@@ -116,6 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="15dp"
         android:background="@color/background"
+        android:visibility="invisible"
         android:layout_above="@id/seperator_line3" />
 
     <TextureView
@@ -129,7 +130,7 @@
         android:layout_height="@dimen/preview_height"
         android:layout_above="@id/pallette"/>
 
-        <include layout="@layout/measure_preview"
+    <include layout="@layout/measure_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

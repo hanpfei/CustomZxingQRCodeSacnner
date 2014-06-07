@@ -235,9 +235,9 @@ public class CameraController {
             IRSJpegPictureCallback jpegPictureCallback =
                     new IRSJpegPictureCallback(mCaptureStartTime, mRegionTag);
 
-            int cameraId = ThermalImagerUtils.getOptimalCameraId();
-            int displayRotation = ThermalImagerUtils.getDisplayRotation(mActivity);
-            int rotation = ThermalImagerUtils.getJpegRotation(cameraId, displayRotation);
+            int cameraId = ImagerUtils.getOptimalCameraId();
+            int displayRotation = ImagerUtils.getDisplayRotation(mActivity);
+            int rotation = ImagerUtils.getJpegRotation(cameraId, displayRotation);
             if (mCameraManager != null) {
                 mCameraManager.setRotation(rotation);
                 mCameraManager.takePicture(shutterCallback, rawPictureCallback, jpegPictureCallback);

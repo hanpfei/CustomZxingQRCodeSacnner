@@ -27,7 +27,11 @@ public class MeasuringModeManager implements OnClickListener,
     private MeasurementOperationListener mListener;
     private TouchEventReceiverView mRectView;
 
-    private int[] mMeasureTempModeDrawableIds = {
+    private int[] mMeasuringModeDrawableIds = {
+            R.drawable.ic_top_measure_temp,
+            R.drawable.ic_top_measure_temp_point,
+            R.drawable.ic_top_measure_temp_line,
+            R.drawable.ic_top_measure_temp_rect
     };
 
     private MeasuringNullMode mNullMode;
@@ -81,7 +85,7 @@ public class MeasuringModeManager implements OnClickListener,
             return;
         }
         ++ mCurrentMeasuringModeIndex;
-        if (mCurrentMeasuringModeIndex == mMeasureTempModeDrawableIds.length) {
+        if (mCurrentMeasuringModeIndex == mMeasuringModeDrawableIds.length) {
             mCurrentMeasuringModeIndex = 0;
         }
         selectMeasureTempMode(mCurrentMeasuringModeIndex, view);
@@ -91,12 +95,23 @@ public class MeasuringModeManager implements OnClickListener,
     public void onClick(View view) {
         int viewId = view.getId();
         switch (viewId) {
+        case R.id.delete:
+            onDeleteClick(view);
+            break;
+
+        case R.id.select_all:
+            onSelectAllClick(view);
+            break;
+
+        case R.id.act_measure:
+            onTempMeasureSwitcherClick(view);
+            break;
         }
     }
 
     private void selectMeasureTempMode(int modeIndex, View view) {
         ImageView imageView = (ImageView)view;
-        imageView.setImageResource(mMeasureTempModeDrawableIds[mCurrentMeasuringModeIndex]);
+        imageView.setImageResource(mMeasuringModeDrawableIds[mCurrentMeasuringModeIndex]);
 
         MeasuringMode measureMode = null;
         switch (modeIndex) {

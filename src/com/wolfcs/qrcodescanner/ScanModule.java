@@ -108,7 +108,7 @@ public class ScanModule implements ImagerModule, OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.s_settings:
-                ThermalImagerUtils.startSettingActivity(mActivity);
+                ImagerUtils.startSettingActivity(mActivity);
                 break;
             default:
                 break;

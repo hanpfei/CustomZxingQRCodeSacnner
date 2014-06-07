@@ -34,7 +34,7 @@ import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 
 final class DecodeHandler extends Handler {
 

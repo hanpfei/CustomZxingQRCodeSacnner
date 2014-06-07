@@ -59,7 +59,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Map;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 
 /**
  * This activity opens the camera and does the actual scanning on a background thread. It draws a

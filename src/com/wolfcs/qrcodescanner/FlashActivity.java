@@ -1,4 +1,4 @@
-package com.hanpfei.zxingqrcodescanner;
+package com.wolfcs.qrcodescanner;
 
 import android.app.Activity;
 import android.content.Intent;

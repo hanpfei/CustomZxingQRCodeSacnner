@@ -31,7 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 
 /**
  * Handles address book entries.

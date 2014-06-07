@@ -24,7 +24,7 @@ import android.app.Activity;
 
 import java.util.Locale;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 
 /**
  * Offers appropriate actions for URLS.

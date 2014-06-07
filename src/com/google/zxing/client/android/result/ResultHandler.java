@@ -38,7 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Locale;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 
 /**
  * A base class for the Android-specific barcode handlers. These allow the app to polymorphically

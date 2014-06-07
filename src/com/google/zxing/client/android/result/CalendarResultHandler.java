@@ -27,7 +27,7 @@ import android.content.Intent;
 import java.text.DateFormat;
 import java.util.Date;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 /**
  * Handles calendar entries encoded in QR Codes.
  *

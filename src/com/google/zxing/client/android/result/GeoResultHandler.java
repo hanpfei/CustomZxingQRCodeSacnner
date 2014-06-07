@@ -21,7 +21,7 @@ import com.google.zxing.client.result.ParsedResult;
 
 import android.app.Activity;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 /**
  * Handles geographic coordinates (typically encoded as geo: URLs).
  *

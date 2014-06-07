@@ -23,7 +23,7 @@ import com.google.zxing.client.result.ProductParsedResult;
 
 import android.app.Activity;
 
-import com.hanpfei.zxingqrcodescanner.R;
+import com.wolfcs.qrcodescanner.R;
 /**
  * Handles generic products which are not books.
  *

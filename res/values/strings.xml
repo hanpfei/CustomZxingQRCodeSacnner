@@ -21,6 +21,9 @@
     <string name="device_id">Device Id</string>
     <string name="exit">Exit？</string>
 
+    <string name="cancel">Cancel</string>
+    <string name="select_all">Select all</string>
+
     <string name="camera_mode">Camera</string>
     <string name="scan_mode">Scan</string>
     <string name="about_settings">About</string>

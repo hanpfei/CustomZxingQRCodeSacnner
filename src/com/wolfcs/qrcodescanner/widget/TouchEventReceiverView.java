@@ -4,17 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewConfiguration;
 
-import com.wolfcs.qrcodescanner.R;
 import com.wolfcs.qrcodescanner.measurement.MeasuringModeManager;
 
 public class TouchEventReceiverView extends View {
-    private static final String TAG = "RectView";
-    private static final boolean DEBUG = true;
-
-    private static final int VIEW_MIN_SIZE = 300;
-
 	public TouchEventReceiverView(Context context) {
         super(context);
     }

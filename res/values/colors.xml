@@ -16,6 +16,7 @@
  -->
 <resources>
     <color name="background">#222222</color>
+    <color name="black">#000000</color>
     
   <color name="contents_text">#ff000000</color>
   <color name="encode_view">#ffffffff</color>

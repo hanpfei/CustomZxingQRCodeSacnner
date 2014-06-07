@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/thermal_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/measure_header_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:layout_gravity="top"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true" >
+
+        <ImageView android:id="@+id/act_measure"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/ic_launcher_settings" />
+
+        <ImageView android:id="@+id/t_settings"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/ic_launcher_settings" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/measure_temp_op_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:layout_gravity="top"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        android:layout_alignParentTop="true" >
+
+        <Button android:id="@+id/cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="@string/cancel" />
+
+        <ImageView android:id="@+id/delete"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:src="@drawable/ic_top_trash" />
+
+        <Button android:id="@+id/select_all"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:clickable="true"
+            android:text="@string/select_all" />
+    </LinearLayout>
+    
+    <com.wolfcs.qrcodescanner.widget.TouchEventReceiverView android:id="@+id/control_rect"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/preview_height" 
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/measure_header_bar" />
+
+    <ImageView android:id="@+id/alert_imgview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:scaleType="center"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/measure_header_bar"
+        android:src="@drawable/ic_mid_warning" />
+
+</RelativeLayout>

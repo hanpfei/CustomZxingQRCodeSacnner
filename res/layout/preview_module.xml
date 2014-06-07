@@ -129,6 +129,13 @@
         android:layout_height="@dimen/preview_height"
         android:layout_above="@id/pallette"/>
 
+        <include layout="@layout/measure_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/pallette"
+        android:visibility="invisible" />
+    
     <include layout="@layout/camera_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

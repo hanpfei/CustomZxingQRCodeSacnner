@@ -20,10 +20,11 @@ import com.wolfcs.qrcodescanner.R;
 public class ModeSwitcher extends View implements OnTouchListener {
     private static final String TAG = "ModeSwitcher";
 
-    private static final int MIN_MODE_INDEX = 0;
     public static final int CAMERA_MODE_INDEX = 0;
-    public static final int SCAN_MODE_INDEX = 1;
-    private static final int MAX_MODE_INDEX = 1;
+    private static final int MIN_MODE_INDEX = CAMERA_MODE_INDEX;
+    public static final int MEASURE_MODE_INDEX = 1;
+    public static final int SCAN_MODE_INDEX = 2;
+    private static final int MAX_MODE_INDEX = SCAN_MODE_INDEX;
 
     private static final int[] MODE_LABEL_IDS = { 
         R.string.camera_mode,
@@ -40,10 +41,11 @@ public class ModeSwitcher extends View implements OnTouchListener {
     private int mLabelHoriInterval = 25;
     private int mLabelVertInterval = 1;
     private float mTextSize = 45;
+    private Paint mTextPaint;
     private int mUnSelectedModeLabelColor = Color.WHITE;
     private int mSelectedModeLabelColor = Color.YELLOW;
 
-    private int mCurrentMode = 1;
+    private int mCurrentMode = 0;
     private GestureDetector mGestureDetector;
     private boolean mSwitchEnabled = true;
 
@@ -63,12 +65,12 @@ public class ModeSwitcher extends View implements OnTouchListener {
     }
 
     private void init() {
-        Paint paint = new Paint();
-        paint.setTextSize(mTextSize);
+        mTextPaint = new Paint();
+        mTextPaint.setTextSize(mTextSize);
         for (int i = 0; i < MODE_LABEL_IDS.length; ++ i) {
             String text = getContext().getString(MODE_LABEL_IDS[i]);
             Rect rect = new Rect();
-            paint.getTextBounds(text, 0, text.length(), rect);
+            mTextPaint.getTextBounds(text, 0, text.length(), rect);
             mModeLabelWidths[i] = rect.width();
         }
 
@@ -97,9 +99,7 @@ public class ModeSwitcher extends View implements OnTouchListener {
         measuredWidth += mLabelHoriInterval * 2;
 
         int radius = 10;
-        Paint paint = new Paint();
-        paint.setTextSize(mTextSize);
-        FontMetrics fontMetrics = paint.getFontMetrics();
+        FontMetrics fontMetrics = mTextPaint.getFontMetrics();
         float textHeight = fontMetrics.bottom - fontMetrics.top;
         measuredHeight = radius * 2 + mLabelVertInterval + (int)textHeight;
 
@@ -113,21 +113,18 @@ public class ModeSwitcher extends View implements OnTouchListener {
         int viewWidth = getWidth();
 
         int radius = 10;
-        Paint paint = new Paint();
-        paint.setStyle(Style.FILL);
+        mTextPaint.setStyle(Style.FILL);
+        mTextPaint.setColor(0xFFFFFFFF);
+        canvas.drawCircle(viewWidth / 2, radius, radius, mTextPaint);
 
-        paint.setColor(0xFFFFFFFF);
-        canvas.drawCircle(viewWidth / 2, radius, radius, paint);
-
-        paint.setTextSize(mTextSize);
-        FontMetrics fontMetrics = paint.getFontMetrics();
+        FontMetrics fontMetrics = mTextPaint.getFontMetrics();
 
         // Draw text of current mode.
         String text = getContext().getString(MODE_LABEL_IDS[mCurrentMode]);
         float startX = viewWidth / 2 - mModeLabelWidths[mCurrentMode] / 2;
         float startY = radius * 2 + mLabelVertInterval - fontMetrics.top;
-        paint.setColor(mSelectedModeLabelColor);
-        canvas.drawText(text, startX, startY, paint);
+        mTextPaint.setColor(mSelectedModeLabelColor);
+        canvas.drawText(text, startX, startY, mTextPaint);
 
         // Draw left text.
         if (mCurrentMode > MIN_MODE_INDEX) {
@@ -135,8 +132,8 @@ public class ModeSwitcher extends View implements OnTouchListener {
             startX = viewWidth / 2 - mModeLabelWidths[mCurrentMode] / 2;
             startX -= mLabelHoriInterval;
             startX -= mModeLabelWidths[mCurrentMode - 1];
-            paint.setColor(mUnSelectedModeLabelColor);
-            canvas.drawText(text, startX, startY, paint);
+            mTextPaint.setColor(mUnSelectedModeLabelColor);
+            canvas.drawText(text, startX, startY, mTextPaint);
         }
 
         // Draw right text.
@@ -144,8 +141,8 @@ public class ModeSwitcher extends View implements OnTouchListener {
             text = getContext().getString(MODE_LABEL_IDS[mCurrentMode + 1]);
             startX = viewWidth / 2 + mModeLabelWidths[mCurrentMode] / 2;
             startX += mLabelHoriInterval;
-            paint.setColor(mUnSelectedModeLabelColor);
-            canvas.drawText(text, startX, startY, paint);
+            mTextPaint.setColor(mUnSelectedModeLabelColor);
+            canvas.drawText(text, startX, startY, mTextPaint);
         }
     }
 

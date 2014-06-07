@@ -9,14 +9,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import java.util.ArrayList;
-
 public class PalletteView extends View implements OnClickListener {
     private static final String TAG = "PalletteView";
     private static final boolean DEBUG = true;
 
     public static final int PALLETTE_LENGTH = 256;
 
+    private Paint mPaint;
     public interface PalletteChangeListener {
         public void onPalletteChange();
     }
@@ -35,6 +34,8 @@ public class PalletteView extends View implements OnClickListener {
     }
 
     private void init() {
+        mPaint = new Paint();
+        mPaint.setStyle(Style.FILL);
         setOnClickListener(this);
         mPallette = new int[PALLETTE_LENGTH];
         for (int i = 0; i < PALLETTE_LENGTH; ++i) {
@@ -51,13 +52,10 @@ public class PalletteView extends View implements OnClickListener {
         int stepWidth = viewWidth / PALLETTE_LENGTH;
         int adjustSteps = 8;
 
-        Paint paint = new Paint();
-        paint.setStyle(Style.FILL);
-
         float left = 0;
         for (int i = 0; i < PALLETTE_LENGTH; ++i) {
             int color = mPallette[i];
-            paint.setColor(color);
+            mPaint.setColor(color);
 
             float width = 0.0f;
             if ((i+1) % adjustSteps == 0) {
@@ -66,7 +64,7 @@ public class PalletteView extends View implements OnClickListener {
                 width = stepWidth;
             }
 
-            canvas.drawRect(left, 0, left + width, viewHeight, paint);
+            canvas.drawRect(left, 0, left + width, viewHeight, mPaint);
             left += width;
         }
     }

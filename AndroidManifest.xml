@@ -28,7 +28,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/irs_launcher"
+        android:icon="@drawable/ic_launcher_camera"
         android:label="@string/app_name">
         <activity
             android:name=".FlashActivity"
@@ -41,10 +41,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegionTagInputActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize">
+        <activity android:name=".ImagerActivity"
+            android:theme="@style/Theme.Camera"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity android:name=".settings.SettingsActivity" 
+            android:theme="@android:style/Theme.Holo"
+            android:icon="@drawable/ic_launcher_settings"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name="com.google.zxing.client.android.CaptureActivity"
             android:clearTaskOnLaunch="true"

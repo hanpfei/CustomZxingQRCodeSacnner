@@ -56,6 +56,15 @@ final class CameraConfigurationManager {
     this.context = context;
   }
 
+  void initFromCameraParameters(Camera camera, int previewWidth, int previewHeight) {
+    Camera.Parameters parameters = camera.getParameters();
+    Point theScreenResolution = new Point(previewWidth, previewHeight);
+    screenResolution = theScreenResolution;
+    Log.i(TAG, "Screen resolution: " + screenResolution);
+    cameraResolution = findBestPreviewSizeValue(parameters, screenResolution);
+    Log.i(TAG, "Camera resolution: " + cameraResolution);
+  }
+
   /**
    * Reads, one time, values from the camera that are needed by the app.
    */

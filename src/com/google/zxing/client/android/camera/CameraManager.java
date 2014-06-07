@@ -19,7 +19,9 @@ package com.google.zxing.client.android.camera;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -51,7 +53,6 @@ public final class CameraManager {
   private Rect framingRect;
   private Rect framingRectInPreview;
   private boolean initialized;
-  private boolean previewing;
   private int requestedFramingRectWidth;
   private int requestedFramingRectHeight;
   /**
@@ -66,13 +67,41 @@ public final class CameraManager {
     previewCallback = new PreviewCallback(configManager);
   }
 
+  public synchronized void openDriver(SurfaceTexture texture)
+          throws IOException {
+    Camera theCamera = openCamera();
+    theCamera.setPreviewTexture(texture);
+    initializeCameraHardware(theCamera);
+  }
+
+  public synchronized void openDriver(SurfaceTexture texture, int previewWidth, int previewHeight)
+          throws IOException {
+    Camera theCamera = openCamera();
+    theCamera.setPreviewTexture(texture);
+    initializeCameraHardware(theCamera, previewWidth, previewHeight);
+  }
+
+  public synchronized void openDriver(SurfaceHolder holder, int previewWidth, int previewHeight)
+          throws IOException {
+    Camera theCamera = openCamera();
+    theCamera.setPreviewDisplay(holder);
+    initializeCameraHardware(theCamera, previewWidth, previewHeight);
+  }
+
   /**
    * Opens the camera driver and initializes the hardware parameters.
    *
    * @param holder The surface object which the camera will draw preview frames into.
    * @throws IOException Indicates the camera driver failed to open.
    */
-  public synchronized void openDriver(SurfaceHolder holder) throws IOException {
+  public synchronized void openDriver(SurfaceHolder holder)
+          throws IOException {
+    Camera theCamera = openCamera();
+    theCamera.setPreviewDisplay(holder);
+    initializeCameraHardware(theCamera);
+  }
+
+  private Camera openCamera() throws IOException {
     Camera theCamera = camera;
     if (theCamera == null) {
       theCamera = OpenCameraInterface.open();
@@ -81,8 +110,27 @@ public final class CameraManager {
       }
       camera = theCamera;
     }
-    theCamera.setPreviewDisplay(holder);
+    return theCamera;
+  }
 
+  private void initializeCameraHardware(Camera theCamera, int previewWidth, int previewHeight) {
+    initializeConfigManager(theCamera, previewWidth, previewHeight);
+    initializeCameraParameters(theCamera);
+  }
+
+  private void initializeConfigManager(Camera theCamera, int previewWidth, int previewHeight) {
+    if (!initialized) {
+      initialized = true;
+      configManager.initFromCameraParameters(theCamera, previewWidth, previewHeight);
+      if (requestedFramingRectWidth > 0 && requestedFramingRectHeight > 0) {
+        setManualFramingRect(requestedFramingRectWidth, requestedFramingRectHeight);
+        requestedFramingRectWidth = 0;
+        requestedFramingRectHeight = 0;
+      }
+    }
+  }
+
+  private void initializeConfigManager(Camera theCamera) {
     if (!initialized) {
       initialized = true;
       configManager.initFromCameraParameters(theCamera);
@@ -92,7 +140,14 @@ public final class CameraManager {
         requestedFramingRectHeight = 0;
       }
     }
+  }
 
+  private void initializeCameraHardware(Camera theCamera) {
+    initializeConfigManager(theCamera);
+    initializeCameraParameters(theCamera);
+  }
+
+  private void initializeCameraParameters(Camera theCamera) {
     Camera.Parameters parameters = theCamera.getParameters();
     String parametersFlattened = parameters == null ? null : parameters.flatten(); // Save these, temporarily
     try {
@@ -125,6 +180,7 @@ public final class CameraManager {
    * Closes the camera driver if still in use.
    */
   public synchronized void closeDriver() {
+    stopPreview();
     if (camera != null) {
       camera.release();
       camera = null;
@@ -140,9 +196,8 @@ public final class CameraManager {
    */
   public synchronized void startPreview() {
     Camera theCamera = camera;
-    if (theCamera != null && !previewing) {
+    if (theCamera != null) {
       theCamera.startPreview();
-      previewing = true;
       autoFocusManager = new AutoFocusManager(context, camera);
     }
   }
@@ -155,10 +210,9 @@ public final class CameraManager {
       autoFocusManager.stop();
       autoFocusManager = null;
     }
-    if (camera != null && previewing) {
+    if (camera != null) {
       camera.stopPreview();
       previewCallback.setHandler(null, 0);
-      previewing = false;
     }
   }
 
@@ -189,10 +243,27 @@ public final class CameraManager {
    */
   public synchronized void requestPreviewFrame(Handler handler, int message) {
     Camera theCamera = camera;
-    if (theCamera != null && previewing) {
+    if (theCamera != null) {
       previewCallback.setHandler(handler, message);
       theCamera.setOneShotPreviewCallback(previewCallback);
     }
+  }
+
+  public synchronized Rect getFramingRect(int width, int height) {
+    if (framingRect == null) {
+        getFramingRect();
+    }
+    if (framingRect == null) {
+        return null;
+    }
+    Point screenResolution = configManager.getScreenResolution();
+    float xRatio = (float) width / screenResolution.x;
+    float yRatio = (float) height / screenResolution.y;
+    Rect rect = new Rect((int) (framingRect.left * xRatio),
+            (int) (framingRect.top * yRatio),
+            (int) (framingRect.right * xRatio),
+            (int) (framingRect.bottom * yRatio));
+    return rect;
   }
 
   /**
@@ -307,4 +378,22 @@ public final class CameraManager {
                                         rect.width(), rect.height(), false);
   }
 
+  public final void autoFocus(Camera.AutoFocusCallback autoFocusCallback) {
+    camera.autoFocus(autoFocusCallback);
+  }
+  
+  public void setRotation(int rotation){
+      Parameters parameters= camera.getParameters();
+      parameters.setRotation(rotation);
+      camera.setParameters(parameters);
+  }
+  
+  public void takePicture(Camera.ShutterCallback shutterCallback,
+    Camera.PictureCallback raw, Camera.PictureCallback jpeg){
+    camera.takePicture(shutterCallback, raw, jpeg);
+  }
+  
+  public void setDisplayOrientation(int cameraDisplayOrientation){
+    camera.setDisplayOrientation(cameraDisplayOrientation);
+  }
 }

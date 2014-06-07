@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+    <dimen name="top_bar_height">45dp</dimen>
+    <dimen name="preview_height">480dp</dimen>
+    <dimen name="seperator_line_height">3dp</dimen>
+    
   <dimen name="standard_padding">8dip</dimen>
   <dimen name="half_padding">4dip</dimen>
 </resources>

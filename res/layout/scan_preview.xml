@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scan_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/scan_header_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/top_bar_height"
+        android:layout_gravity="top"
+        android:background="@color/background"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true" >
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="99" />
+
+    <TextView android:id="@+id/s_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="right|center_vertical"
+        android:gravity="center_vertical"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_launcher_settings" />
+    </LinearLayout>
+
+    <com.google.zxing.client.android.ViewfinderView
+        android:id="@+id/viewfinder_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/preview_height"
+        android:layout_alignParentBottom="true" />
+    
+    <TextView android:id="@+id/scan_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:textSize="20sp"/>
+</RelativeLayout>

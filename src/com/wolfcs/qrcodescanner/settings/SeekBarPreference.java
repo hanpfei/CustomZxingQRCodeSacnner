@@ -79,8 +79,6 @@ public class SeekBarPreference extends DialogPreference implements
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             saveValue(mSeekbar.getProgress());
-        } else {
-            Log.i(TAG, "You click negative button");
         }
     }
 

@@ -30,6 +30,8 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         String str;
         mEmissionFreqPreference = (SeekBarPreference) findPreference(EMISSION_FREQ_KEY);
         mEmissionFreqPreference.setOnPreferenceChangeListener(this);
+        float value = mEmissionFreqPreference.getValue();
+        mEmissionFreqPreference.setSummary(String.valueOf(value));
 
         mRTCPreference = (EditTextPreference) findPreference(RTC_KEY);
         mRTCPreference.setOnPreferenceChangeListener(this);
@@ -41,6 +43,8 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
 
         mOpticalTransmittance = (SeekBarPreference) findPreference(OPTICAL_TRANSMITTANCE_KEY);
         mOpticalTransmittance.setOnPreferenceChangeListener(this);
+        value = mOpticalTransmittance.getValue();
+        mOpticalTransmittance.setSummary(String.valueOf(value) + "%");
 
         mEnvTempPreference = (EditTextPreference) findPreference(ENV_TEMP_KEY);
         mEnvTempPreference.setOnPreferenceChangeListener(this);
@@ -63,12 +67,9 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mEmissionFreqPreference) {
-            String string = (String) newValue;
-            float value = Float.valueOf(string);
-            if (value < 0 || value > 1) {
-                return true;
-            }
-            mEmissionFreqPreference.setSummary(string);
+            Float value = (Float) newValue;
+            mEmissionFreqPreference.setSummary(String.valueOf(value));
+            return true;
         } else if (preference == mRTCPreference) {
             String string = (String)newValue;
             int value = Integer.valueOf(string);
@@ -79,6 +80,10 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
             String celiusStr = getString(R.string.celcius);
             String summary = value + " " + celiusStr;
             mRTCPreference.setSummary(summary);
+            return true;
+        } else if (preference == mOpticalTransmittance){
+            Float value = (Float) newValue;
+            mOpticalTransmittance.setSummary(String.valueOf(value) + "%");
             return true;
         } else if (preference == mEnvTempPreference) {
             String string = (String)newValue;

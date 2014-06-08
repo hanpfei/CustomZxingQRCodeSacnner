@@ -66,19 +66,22 @@ public class SeekBarPreference extends DialogPreference implements
 
     private int getSeekbarProgress() {
         float value = getValue();
-        int progress = (int) (value / (mMaxValue - mMinValue)
-                * SEEK_BAR_MAX_VALUE + mMinValue);
+        int progress = (int) ((value - mMinValue) / (mMaxValue - mMinValue)
+                * SEEK_BAR_MAX_VALUE);
         return progress;
     }
 
-    private float getValue() {
+    public float getValue() {
         return getSharedPreferences().getFloat(getKey(), mDefault);
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            saveValue(mSeekbar.getProgress());
+            float value = getValueFromProgress(mSeekbar.getProgress());
+            if (callChangeListener(value)) {
+                saveValue(mSeekbar.getProgress());
+            }
         }
     }
 

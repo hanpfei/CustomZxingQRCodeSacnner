@@ -5,8 +5,6 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 public class CameraModule implements ImagerModule, OnClickListener {
-    private static final String TAG = "CameraModule";
-
     private View mCameraRootView;
     private View mCameraPreviewView;
     private TextView mFlash;

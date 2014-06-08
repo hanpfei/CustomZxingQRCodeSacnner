@@ -32,6 +32,16 @@
     <string name="language_zh">中文</string>
     <string name="language_en">English</string>
 
+    <string name="temp_measurement_paras_settings">Tempreture measurement parameters settings</string>
+    <string name="emission_freq_title">Emission setting</string>
+    <string name="optical_transmittance">Optical transmittance</string>
+    <string name="env_temp">Environment tempreture</string>
+    <string name="measuring_distance">Measuring distance</string>
+
+    <string name="tempreture_settings">Tempreture settings</string>
+    <string name="temp_range">Tempreture range</string>
+    <string name="range_model">Range model</string>
+
   <string name="app_picker_name">Applications</string>
   <string name="bookmark_picker_name">Bookmarks</string>
   <string name="button_add_calendar">Add to calendar</string>

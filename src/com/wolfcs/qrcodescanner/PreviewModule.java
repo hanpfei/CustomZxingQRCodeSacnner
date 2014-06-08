@@ -3,7 +3,6 @@ package com.wolfcs.qrcodescanner;
 import com.wolfcs.qrcodescanner.widget.ModeSwitcher;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;

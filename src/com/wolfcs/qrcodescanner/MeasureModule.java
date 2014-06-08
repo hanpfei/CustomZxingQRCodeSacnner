@@ -5,16 +5,9 @@ import com.wolfcs.qrcodescanner.measurement.MeasuringModeManager;
 import com.wolfcs.qrcodescanner.widget.PalletteView;
 import com.wolfcs.qrcodescanner.widget.TouchEventReceiverView;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Bitmap.Config;
-import android.graphics.Paint.Style;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,8 +16,6 @@ import android.widget.TextView;
 
 public class MeasureModule implements ImagerModule, OnClickListener, 
         MeasurementOperationListener {
-    private static final String TAG = "ThermalModule";
-    private static final String C = "℃";
     private static final String MIN_TEMP_KEY = "min_temp";
     private static final String MAX_TEMP_KEY = "max_temp";
 

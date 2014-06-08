@@ -43,6 +43,14 @@ public class PalletteView extends View implements OnClickListener {
         }
     }
 
+    public void setPallette(int[] pallette) {
+        if (pallette == null || pallette.length != PALLETTE_LENGTH) {
+            throw new IllegalArgumentException("Invalid pallette!");
+        }
+        mPallette = new int[PALLETTE_LENGTH];
+        System.arraycopy(pallette, 0, mPallette, 0, PALLETTE_LENGTH);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         int viewWidth = getWidth();

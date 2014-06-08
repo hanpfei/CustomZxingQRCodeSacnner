@@ -24,7 +24,9 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
-    private static final String[] ENTRY_FRAGMENTS = { 
+    private static final String[] ENTRY_FRAGMENTS = {
+        TemperatureSettingsFragment.class.getName(),
+        TempMeasurementParasFragment.class.getName(),
         AboutFragment.class.getName(),
     };
 

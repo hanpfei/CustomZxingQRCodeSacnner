@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <com.wolfcs.qrcodescanner.settings.SeekBarPreference
+        android:key="emission_freq"
+        android:title="@string/emission_freq_title" >
+    </com.wolfcs.qrcodescanner.settings.SeekBarPreference >
+
+    <EditTextPreference
+        android:key="rtc"
+        android:title="RTC" >
+    </EditTextPreference>
+
+    <com.wolfcs.qrcodescanner.settings.SeekBarPreference
+        android:key="optical_transmittance"
+        android:title="@string/optical_transmittance" >
+    </com.wolfcs.qrcodescanner.settings.SeekBarPreference >
+
+    <EditTextPreference
+        android:key="env_temp"
+        android:title="@string/env_temp" >
+    </EditTextPreference>
+
+    <EditTextPreference
+        android:key="measuring_distance"
+        android:title="@string/measuring_distance" >
+    </EditTextPreference>
+</PreferenceScreen>

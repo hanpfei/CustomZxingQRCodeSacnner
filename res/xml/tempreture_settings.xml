@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ListPreference android:key="temp_range"
+        android:entries="@array/temp_range_entries"
+        android:entryValues="@array/temp_range_entry_values"
+        android:defaultValue="0"
+        android:summary="@string/temp_range"
+        android:title="@string/temp_range" />
+
+    <ListPreference
+        android:key="range_model"
+        android:title="@string/range_model"
+        android:entries="@array/range_mode_entries"
+        android:entryValues="@array/range_mode_values"
+        android:defaultValue="0"/>
+</PreferenceScreen>

@@ -24,5 +24,9 @@
         <attr name="maxValue" format="float" />
         <attr name="minValue" format="float" />
         <attr name="unit" format="string" />
+
+        <attr name="MinValue" format="integer" />
+        <attr name="MaxValue" format="integer" />
+        <attr name="DefaultValue" format="integer" />
     </declare-styleable>
 </resources>

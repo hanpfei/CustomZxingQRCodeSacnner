@@ -8,10 +8,13 @@
         wolfcs:minValue="0.1"
         wolfcs:maxValue="1.0"
         wolfcs:defaultValue="0.95" />
-    <EditTextPreference
+
+    <com.wolfcs.qrcodescanner.settings.NumberPickerPreference
         android:key="rtc"
-        android:title="RTC" >
-    </EditTextPreference>
+        android:title="RTC"
+        wolfcs:MinValue="0"
+        wolfcs:MaxValue="2000"
+        wolfcs:unit="@string/celcius" />
 
     <com.wolfcs.qrcodescanner.settings.SeekBarPreference
         android:key="optical_transmittance"
@@ -23,11 +26,13 @@
 
     <EditTextPreference
         android:key="env_temp"
-        android:title="@string/env_temp" >
-    </EditTextPreference>
+        android:title="@string/env_temp" />
 
-    <EditTextPreference
+    <com.wolfcs.qrcodescanner.settings.NumberPickerPreference
         android:key="measuring_distance"
-        android:title="@string/measuring_distance" >
-    </EditTextPreference>
+        android:title="@string/measuring_distance"
+        wolfcs:MinValue="1"
+        wolfcs:MaxValue="1000"
+        wolfcs:DefaultValue="5"
+        wolfcs:unit="M" />
 </PreferenceScreen>

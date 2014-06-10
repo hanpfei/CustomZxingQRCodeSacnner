@@ -6,14 +6,12 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class SeekBarPreference extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
-    private static final String TAG = "SeekBarPreference";
     private static final int SEEK_BAR_MAX_VALUE = 100;
 
     private SeekBar mSeekbar;

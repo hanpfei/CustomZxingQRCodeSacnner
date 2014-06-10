@@ -17,10 +17,10 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
     private static final String MEASURING_DISTANCE_KEY = "measuring_distance";
 
     private SeekBarPreference mEmissionFreqPreference;
-    private EditTextPreference mRTCPreference;
+    private NumberPickerPreference mRTCPreference;
     private SeekBarPreference mOpticalTransmittance;
     private EditTextPreference mEnvTempPreference;
-    private EditTextPreference mMeasuringDistance;
+    private NumberPickerPreference mMeasuringDistance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,13 +33,14 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         float value = mEmissionFreqPreference.getValue();
         mEmissionFreqPreference.setSummary(String.valueOf(value));
 
-        mRTCPreference = (EditTextPreference) findPreference(RTC_KEY);
+        mRTCPreference = (NumberPickerPreference) findPreference(RTC_KEY);
         mRTCPreference.setOnPreferenceChangeListener(this);
         String title = mRTCPreference.getTitle().toString();
         title = title + " (" + getString(R.string.celcius) + ")";
         mRTCPreference.setDialogTitle(title);
-        str = mRTCPreference.getText();
-        mRTCPreference.setSummary(str + " " + getString(R.string.celcius));
+        int rtc = mRTCPreference.getValue();
+        String unit = mRTCPreference.getUnit();
+        mRTCPreference.setSummary(rtc + unit);
 
         mOpticalTransmittance = (SeekBarPreference) findPreference(OPTICAL_TRANSMITTANCE_KEY);
         mOpticalTransmittance.setOnPreferenceChangeListener(this);
@@ -54,13 +55,14 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         str = mEnvTempPreference.getText();
         mEnvTempPreference.setSummary(str + " " + getString(R.string.celcius));
 
-        mMeasuringDistance = (EditTextPreference) findPreference(MEASURING_DISTANCE_KEY);
+        mMeasuringDistance = (NumberPickerPreference) findPreference(MEASURING_DISTANCE_KEY);
         mMeasuringDistance.setOnPreferenceChangeListener(this);
         title = mMeasuringDistance.getTitle().toString();
-        title = title + " (" + "m" + ")";
+        unit = mMeasuringDistance.getUnit();
+        title = title + " (" + unit + ")";
         mMeasuringDistance.setDialogTitle(title);
-        str = mMeasuringDistance.getText();
-        mMeasuringDistance.setSummary(str + " m");
+        int distance = mMeasuringDistance.getValue();
+        mMeasuringDistance.setSummary(distance + unit);
 
     }
 
@@ -71,14 +73,9 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
             mEmissionFreqPreference.setSummary(String.valueOf(value));
             return true;
         } else if (preference == mRTCPreference) {
-            String string = (String)newValue;
-            int value = Integer.valueOf(string);
-            if (value < 0 || value > 2000) {
-                return true;
-            }
-            mRTCPreference.setText(string);
-            String celiusStr = getString(R.string.celcius);
-            String summary = value + " " + celiusStr;
+            Integer rtc = (Integer)newValue;
+            String unit = mRTCPreference.getUnit();
+            String summary = rtc + " " + unit;
             mRTCPreference.setSummary(summary);
             return true;
         } else if (preference == mOpticalTransmittance){
@@ -97,14 +94,9 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
             mEnvTempPreference.setSummary(summary);
             return true;
         } else if (preference == mMeasuringDistance) {
-            String string = (String)newValue;
-            int value = Integer.valueOf(string);
-            if (value < 1 || value > 1000) {
-                return true;
-            }
-            mMeasuringDistance.setText(string);
-            String unit = "m";
-            String summary = value + " " + unit;
+            Integer distance = (Integer) newValue;
+            String unit = mMeasuringDistance.getUnit();
+            String summary = distance + " " + unit;
             mMeasuringDistance.setSummary(summary);
             return true;
         }

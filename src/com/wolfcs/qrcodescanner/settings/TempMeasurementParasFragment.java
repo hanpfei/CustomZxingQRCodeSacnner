@@ -19,7 +19,7 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
     private SeekBarPreference mEmissionFreqPreference;
     private NumberPickerPreference mRTCPreference;
     private SeekBarPreference mOpticalTransmittance;
-    private EditTextPreference mEnvTempPreference;
+    private NumberEditorPreference mEnvTempPreference;
     private NumberPickerPreference mMeasuringDistance;
 
     @Override
@@ -47,13 +47,13 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         value = mOpticalTransmittance.getValue();
         mOpticalTransmittance.setSummary(String.valueOf(value) + "%");
 
-        mEnvTempPreference = (EditTextPreference) findPreference(ENV_TEMP_KEY);
+        mEnvTempPreference = (NumberEditorPreference) findPreference(ENV_TEMP_KEY);
         mEnvTempPreference.setOnPreferenceChangeListener(this);
         title = mEnvTempPreference.getTitle().toString();
         title = title + " (" + getString(R.string.celcius) + ")";
         mEnvTempPreference.setDialogTitle(title);
-        str = mEnvTempPreference.getText();
-        mEnvTempPreference.setSummary(str + " " + getString(R.string.celcius));
+//        str = mEnvTempPreference.getText();
+//        mEnvTempPreference.setSummary(str + " " + getString(R.string.celcius));
 
         mMeasuringDistance = (NumberPickerPreference) findPreference(MEASURING_DISTANCE_KEY);
         mMeasuringDistance.setOnPreferenceChangeListener(this);
@@ -83,12 +83,13 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
             mOpticalTransmittance.setSummary(String.valueOf(value) + "%");
             return true;
         } else if (preference == mEnvTempPreference) {
-            String string = (String)newValue;
-            int value = Integer.valueOf(string);
-            if (value < -50 || value > 100) {
-                return true;
-            }
-            mEnvTempPreference.setText(string);
+//            String string = (String)newValue;
+//            int value = Integer.valueOf(string);
+//            if (value < -50 || value > 100) {
+//                return true;
+//            }
+//            mEnvTempPreference.setText(string);
+            Integer value = (Integer)newValue;
             String celiusStr = getString(R.string.celcius);
             String summary = value + " " + celiusStr;
             mEnvTempPreference.setSummary(summary);

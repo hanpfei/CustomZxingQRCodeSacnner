@@ -24,9 +24,13 @@
         wolfcs:defaultValue="100"
         wolfcs:unit="%" />
 
-    <EditTextPreference
+    <com.wolfcs.qrcodescanner.settings.NumberEditorPreference
         android:key="env_temp"
-        android:title="@string/env_temp" />
+        android:title="@string/env_temp"
+        wolfcs:MinValue="-50"
+        wolfcs:MaxValue="100"
+        wolfcs:DefaultValue="5"
+        wolfcs:unit="@string/celcius" />
 
     <com.wolfcs.qrcodescanner.settings.NumberPickerPreference
         android:key="measuring_distance"

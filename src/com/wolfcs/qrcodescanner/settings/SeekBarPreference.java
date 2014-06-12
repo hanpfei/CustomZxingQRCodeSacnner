@@ -73,6 +73,10 @@ public class SeekBarPreference extends DialogPreference implements
         return getSharedPreferences().getFloat(getKey(), mDefault);
     }
 
+    public String getUnit() {
+        return mUnit;
+    }
+
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {

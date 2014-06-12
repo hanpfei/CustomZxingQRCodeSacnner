@@ -110,7 +110,11 @@ public class NumberEditorPreference extends DialogPreference {
         notifyChanged();
     }
 
-    public String getText() {
-        return mEditText.getText().toString();
+    public int getValue() {
+        return getSharedPreferences().getInt(getKey(), mDefaultValue);
+    }
+
+    public String getUnit() {
+        return mUnit;
     }
 }

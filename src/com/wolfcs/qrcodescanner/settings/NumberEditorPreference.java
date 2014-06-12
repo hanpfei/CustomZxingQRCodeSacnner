@@ -43,7 +43,7 @@ public class NumberEditorPreference extends DialogPreference {
     
     @Override
     protected View onCreateDialogView() {
-        return View.inflate(getContext(), R.layout.preference_dialog_numberedit, null);
+        return View.inflate(getContext(), R.layout.preference_dialog_numbereditor, null);
     }
 
     @Override

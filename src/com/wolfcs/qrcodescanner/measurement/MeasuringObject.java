@@ -28,7 +28,7 @@ public abstract class MeasuringObject {
 
     public abstract void drawSelectedOnView(Canvas canvas);
 
-    public abstract void drawOperatingOnView(Canvas canvas);
+    public abstract void drawOperatedObjectOnView(Canvas canvas);
 
     public abstract void drawOnThermalImage(Canvas canvas);
     

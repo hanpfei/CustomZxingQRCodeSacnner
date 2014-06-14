@@ -78,7 +78,7 @@ public class MeasuringLine extends MeasuringObject {
     }
 
     @Override
-    public void drawOperatingOnView(Canvas canvas) {
+    public void drawOperatedObjectOnView(Canvas canvas) {
         drawSelectedOnView(canvas);
         Paint paint = new Paint();
         paint.setStrokeWidth(LINE_DRAW_WIDTH);
@@ -165,5 +165,15 @@ public class MeasuringLine extends MeasuringObject {
 
         mViewMaxTempX = mStopX;
         mViewMaxTempY = mStopY;
+    }
+
+    public static void drawLine(Canvas canvas, float startX, float startY,
+            float endX, float endY) {
+        Paint paint = new Paint();
+        paint.setStyle(Style.STROKE);
+        paint.setStrokeWidth(LINE_DRAW_WIDTH);
+        paint.setColor(Color.WHITE);
+
+        canvas.drawLine(startX, startY, endX, endY, paint);
     }
 }

@@ -69,21 +69,19 @@ public class MeasuringLineMode extends MeasuringMode {
             float yPosition = event.getY();
             float dx = xPostion - mTrackPoint.x;
             float dy = yPosition - mTrackPoint.y;
+            if (Math.abs(dx) > MOVE_THREASHOLD || Math.abs(dy) > MOVE_THREASHOLD) {
+                mTrackPoint.x = (int) xPostion;
+                mTrackPoint.y = (int) yPosition;
+            }
             if (mEndpointType != EndpointType.NONE) {
                 if (mEndpointType == EndpointType.START_POINT) {
                     mOpMeasuringLine.moveStartPoint(dx, dy);
                 } else if (mEndpointType == EndpointType.STOP_POINT) {
                     mOpMeasuringLine.moveStopPoint(dx, dy);
                 }
-                mTrackPoint.x = (int) xPostion;
-                mTrackPoint.y = (int) yPosition;
             }else if (mCurrentMeasuringLine != null) {
-                if (Math.abs(dx) > MOVE_THREASHOLD || Math.abs(dy) > MOVE_THREASHOLD) {
-                    cancelLongPressCheck(view);
-                    mCurrentMeasuringLine.move(dx, dy);
-                    mTrackPoint.x = (int) xPostion;
-                    mTrackPoint.y = (int) yPosition;
-                }
+                cancelLongPressCheck(view);
+                mCurrentMeasuringLine.move(dx, dy);
             }
             break;
 
@@ -150,7 +148,12 @@ public class MeasuringLineMode extends MeasuringMode {
             line.drawSelectedOnView(canvas);
         }
         if (mOpMeasuringLine != null) {
-            mOpMeasuringLine.drawOperatingOnView(canvas);
+            mOpMeasuringLine.drawOperatedObjectOnView(canvas);
+        }
+        if (mUsingMeasuringLines.size() < mMaxMeasuringLineNum
+                && mCurrentMeasuringLine == null) {
+            MeasuringLine.drawLine(canvas, mTouchDownPoint.x,
+                    mTouchDownPoint.y, mTrackPoint.x, mTrackPoint.y);
         }
     }
 

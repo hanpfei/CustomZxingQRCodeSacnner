@@ -303,7 +303,6 @@ public class MeasuringRectMode extends MeasuringMode {
                 rect = new MeasuringRect(getContext(), paint, mUsingMeasuredRects.size(),
                         getWidth(), getHeight());
             }
-
             mUsingMeasuredRects.add(rect);
             return rect;
         }

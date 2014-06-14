@@ -59,7 +59,6 @@ public class MeasuringRect extends MeasuringObject {
 
     @Override
     public void move(float dx, float dy) {
-
         Rect onViewRect = getOnViewRect();
         int left = (int) (onViewRect.left + dx);
         int top = (int) (onViewRect.top + dy);

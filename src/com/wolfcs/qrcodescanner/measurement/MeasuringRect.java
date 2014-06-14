@@ -155,16 +155,6 @@ public class MeasuringRect extends MeasuringObject {
                 radius, paint);
     }
 
-    @Override
-    public void drawOnThermalImage(Canvas canvas) {
-
-    }
-
-    @Override
-    public boolean containOnViewPoint(float xPosition, float yPosition) {
-        return mOnViewRect.contains((int)xPosition, (int)yPosition);
-    }
-
     public Rect getOnViewRect() {
         return new Rect(mOnViewRect);
     }
@@ -177,6 +167,11 @@ public class MeasuringRect extends MeasuringObject {
     public void drawOnRealWorldObjectImage(Canvas canvas) {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public boolean containOnViewPoint(float xPosition, float yPosition) {
+        return mOnViewRect.contains((int)xPosition, (int)yPosition);
     }
 
     public boolean isDrop() {

@@ -44,8 +44,6 @@ public abstract class MeasuringObject {
 
     public abstract void drawOperatedObjectOnView(Canvas canvas);
 
-    public abstract void drawOnThermalImage(Canvas canvas);
-
     public abstract void drawOnRealWorldObjectImage(Canvas canvas);
 
     public boolean containOnViewPoint(Point point) {

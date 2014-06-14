@@ -79,7 +79,7 @@ public class MeasuringLineMode extends MeasuringMode {
                 } else if (mEndpointType == EndpointType.STOP_POINT) {
                     mOpMeasuringLine.moveStopPoint(dx, dy);
                 }
-            }else if (mCurrentMeasuringLine != null) {
+            } else if (mCurrentMeasuringLine != null) {
                 cancelLongPressCheck(view);
                 mCurrentMeasuringLine.move(dx, dy);
             }
@@ -164,6 +164,8 @@ public class MeasuringLineMode extends MeasuringMode {
             recycle(line);
         }
         mUsingMeasuringLines.clear();
+        mOpMeasuringLine = null;
+        performMeasuringObjectsDeSelected();
     }
 
     @Override
@@ -182,7 +184,7 @@ public class MeasuringLineMode extends MeasuringMode {
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
         for (MeasuringLine line : mUsingMeasuringLines) {
-            line.drawOnThermalImage(canvas);
+            line.drawOnRealWorldObjectImage(canvas);
         }
     }
 

@@ -38,7 +38,6 @@ public class MeasuringNullMode extends MeasuringMode {
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        
-    }
 
+    }
 }

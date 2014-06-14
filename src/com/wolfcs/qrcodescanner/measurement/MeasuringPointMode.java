@@ -244,7 +244,6 @@ public class MeasuringPointMode extends MeasuringMode {
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        // TODO Auto-generated method stub
-        
+
     }
 }

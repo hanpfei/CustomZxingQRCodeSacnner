@@ -88,11 +88,6 @@ public class MeasuringLine extends MeasuringObject {
     }
 
     @Override
-    public void drawOnThermalImage(Canvas canvas) {
-        
-    }
-
-    @Override
     public boolean containOnViewPoint(float xPosition, float yPosition) {
         float left = mStartX < mStopX ? mStartX : mStopX;
         float right = mStartX > mStopX ? mStartX : mStopX;

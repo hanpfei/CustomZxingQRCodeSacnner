@@ -270,6 +270,7 @@ public class MeasuringRectMode extends MeasuringMode {
                 mOperatingMeasuredRect = null;
             }
         }
+        performMeasuringObjectsDeSelected();
     }
 
     @Override

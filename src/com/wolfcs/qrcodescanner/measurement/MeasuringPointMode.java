@@ -151,6 +151,7 @@ public class MeasuringPointMode extends MeasuringMode {
             recycle(point);
         }
         mSelectedPoints.clear();
+        performMeasuringObjectsDeSelected();
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.text.Spanned;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 public class NumberEditorPreference extends DialogPreference {
@@ -40,7 +41,7 @@ public class NumberEditorPreference extends DialogPreference {
     public NumberEditorPreference(Context context) {
         this(context, null);
     }
-    
+
     @Override
     protected View onCreateDialogView() {
         return View.inflate(getContext(), R.layout.preference_dialog_numbereditor, null);
@@ -53,9 +54,10 @@ public class NumberEditorPreference extends DialogPreference {
         int value = getSharedPreferences().getInt(getKey(), mDefaultValue);
         getEditor().putInt(getKey(), value).commit();
         mEditText.setText(String.valueOf(value));
+        mEditText.setInputType(EditorInfo.TYPE_CLASS_NUMBER
+                | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
+        mEditText.setFilters(new InputFilter[] { mInputFilter });
         mEditText.setSelection(String.valueOf(value).length());
-
-        mEditText.setFilters(new InputFilter[] {mInputFilter});
     }
 
     private InputFilter mInputFilter = new InputFilter () {
@@ -66,11 +68,14 @@ public class NumberEditorPreference extends DialogPreference {
             String text = mEditText.getText().toString();
             int value = 0;
 
+            StringBuilder string = new StringBuilder(dest);
+            string.replace(mEditText.getSelectionStart(),
+                    mEditText.getSelectionEnd(), source.toString());
             try {
                 if (!text.equals("")) {
                     value = Integer.parseInt(text);
                 }
-                value = Integer.parseInt(dest.toString() + source.toString());
+                value = Integer.parseInt(string.toString());
             } catch (Exception e) {
                 Log.w(TAG, "parseInt failed: string = " + dest.toString() + source.toString());
             }

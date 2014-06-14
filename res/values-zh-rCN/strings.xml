@@ -19,6 +19,12 @@
   <string name="next">Next</string>
   <string name="device_id">Device Id</string>
 
+    <string name="alarm_threshold">报警阈值</string>
+    <string name="above_alarm">高于报警</string>
+    <string name="above_threshold">阈值(高于)</string>
+    <string name="below_alarm">低于报警</string>
+    <string name="below_threshold">阈值(低于)</string>
+
   <string name="app_picker_name">应用</string>
   <string name="bookmark_picker_name">书签</string>
   <string name="button_add_calendar">添加事件至日历</string>

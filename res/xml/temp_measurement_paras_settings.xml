@@ -28,7 +28,7 @@
         android:key="env_temp"
         android:title="@string/env_temp"
         wolfcs:MinValue="-50"
-        wolfcs:MaxValue="100"
+        wolfcs:MaxValue="150"
         wolfcs:DefaultValue="5"
         wolfcs:unit="@string/celcius" />
 

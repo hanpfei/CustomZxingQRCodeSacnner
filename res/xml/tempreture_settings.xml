@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen
+    xmlns:wolfcs="http://schemas.android.com/apk/res/com.wolfcs.qrcodescanner"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
     <ListPreference android:key="temp_range"
         android:entries="@array/temp_range_entries"
         android:entryValues="@array/temp_range_entry_values"
@@ -13,4 +15,28 @@
         android:entries="@array/range_mode_entries"
         android:entryValues="@array/range_mode_values"
         android:defaultValue="0"/>
+
+    <PreferenceCategory
+        android:title="@string/alarm_threshold">
+        <SwitchPreference
+            android:key="above_alarm"
+            android:title="@string/above_alarm" />
+        <com.wolfcs.qrcodescanner.settings.FloatNumberEditorPreference
+            android:key="above_threshold"
+            android:title="@string/above_threshold"
+            wolfcs:minValue="-20.0"
+            wolfcs:maxValue="1350.0"
+            wolfcs:defaultValue="50.0"
+            wolfcs:unit="@string/celcius" />
+        <SwitchPreference
+            android:key="below_alarm"
+            android:title="@string/above_alarm" />
+        <com.wolfcs.qrcodescanner.settings.FloatNumberEditorPreference
+            android:key="below_threshold"
+            android:title="@string/below_threshold"
+            wolfcs:minValue="-20.0"
+            wolfcs:maxValue="1350.0"
+            wolfcs:defaultValue="50.0"
+            wolfcs:unit="@string/celcius" />
+    </PreferenceCategory>
 </PreferenceScreen>

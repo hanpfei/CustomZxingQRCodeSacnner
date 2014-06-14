@@ -41,6 +41,11 @@
     <string name="tempreture_settings">Tempreture settings</string>
     <string name="temp_range">Tempreture range</string>
     <string name="range_model">Range model</string>
+    <string name="alarm_threshold">Alarm threshold value</string>
+    <string name="above_alarm">Above alarm</string>
+    <string name="above_threshold">Threshold value(above)</string>
+    <string name="below_alarm">Below alarm</string>
+    <string name="below_threshold">Threshold value(bolow)</string>
 
   <string name="app_picker_name">Applications</string>
   <string name="bookmark_picker_name">Bookmarks</string>

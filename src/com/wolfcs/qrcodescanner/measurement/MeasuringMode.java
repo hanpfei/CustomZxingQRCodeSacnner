@@ -47,7 +47,8 @@ public abstract class MeasuringMode implements OnTouchListener{
     public abstract void cancelOpOnMeasuringObjects();
 
     public interface MeasurementOperationListener {
-        public void onTempMeasuredObjectSelected();
+        public void onMeasuredObjectsSelected();
+        public void onMeasuredObjectsDeSelected();
     }
 
     private MeasurementOperationListener mOperationListener;
@@ -56,9 +57,15 @@ public abstract class MeasuringMode implements OnTouchListener{
         mOperationListener = listenner;
     }
 
-    protected void performMeasuringObjectSelected() {
+    protected void performMeasuringObjectsSelected() {
         if(mOperationListener != null) {
-            mOperationListener.onTempMeasuredObjectSelected();
+            mOperationListener.onMeasuredObjectsSelected();
+        }
+    }
+
+    protected void performMeasuringObjectsDeSelected() {
+        if (mOperationListener != null) {
+            mOperationListener.onMeasuredObjectsDeSelected();
         }
     }
 

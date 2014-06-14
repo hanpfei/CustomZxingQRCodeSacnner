@@ -2,7 +2,7 @@ package com.wolfcs.qrcodescanner.measurement;
 
 import com.wolfcs.qrcodescanner.R;
 import com.wolfcs.qrcodescanner.measurement.MeasuringMode.MeasurementOperationListener;
-import com.wolfcs.qrcodescanner.measurement.MeasuringRectMode.MeasuredRect;
+import com.wolfcs.qrcodescanner.measurement.MeasuringRect;
 import com.wolfcs.qrcodescanner.measurement.MeasuringRectMode.MeasuredRectUpdateListener;
 import com.wolfcs.qrcodescanner.widget.TouchEventReceiverView;
 
@@ -157,7 +157,7 @@ public class MeasuringModeManager implements OnClickListener,
 
 
     @Override
-    public void onMeasuredRectUpdate(MeasuredRect measuredRect) {
+    public void onMeasuredRectUpdate(MeasuringRect measuredRect) {
         if (DEBG) Log.i(TAG, "onMeasuredRectUpdate");
         if(!measuredRect.isDrop()) {
             // Do something.

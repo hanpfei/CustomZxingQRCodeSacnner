@@ -62,7 +62,7 @@ public class MeasuringPointMode extends MeasuringMode {
                 if (mCounter > 0 || isReleased || isMoved) {
                     return;
                 }
-                performMeasuringObjectSelected();
+                performMeasuringObjectsSelected();
                 mOperationMode = true;
             }
         }; 

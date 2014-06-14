@@ -148,7 +148,12 @@ public class MeasureModule implements ImagerModule, OnClickListener,
     };
 
     @Override
-    public void onTempMeasuredObjectSelected() {
+    public void onMeasuredObjectsSelected() {
         mMeasureOpBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onMeasuredObjectsDeSelected() {
+        mMeasureOpBar.setVisibility(View.INVISIBLE);
     }
 }

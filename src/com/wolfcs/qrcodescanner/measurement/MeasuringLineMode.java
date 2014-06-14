@@ -40,7 +40,7 @@ public class MeasuringLineMode extends MeasuringMode {
 
     @Override
     protected void onLongPress() {
-        performMeasuringObjectSelected();
+        performMeasuringObjectsSelected();
         mOpMeasuringLine = mCurrentMeasuringLine;
     }
 
@@ -132,7 +132,7 @@ public class MeasuringLineMode extends MeasuringMode {
             line = mUsableMeasuringLines.get(0);
         } else {
             line = new MeasuringLine(getContext(),
-                    mUsingMeasuringLines.size());
+                    mUsingMeasuringLines.size(), getWidth(), getHeight());
         }
         return line;
     }

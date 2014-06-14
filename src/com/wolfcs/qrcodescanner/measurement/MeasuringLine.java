@@ -28,8 +28,8 @@ public class MeasuringLine extends MeasuringObject {
     private float mViewMaxTempX;
     private float mViewMaxTempY;
 
-    public MeasuringLine(Context context, int index) {
-        super(context);
+    public MeasuringLine(Context context, int index, int width, int height) {
+        super(context, width, height);
         mIndex = index;
         init();
     }
@@ -175,5 +175,10 @@ public class MeasuringLine extends MeasuringObject {
         paint.setColor(Color.WHITE);
 
         canvas.drawLine(startX, startY, endX, endY, paint);
+    }
+
+    @Override
+    public void drawOnRealWorldObjectImage(Canvas canvas) {
+
     }
 }

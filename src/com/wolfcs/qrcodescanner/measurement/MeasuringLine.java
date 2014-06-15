@@ -8,7 +8,7 @@ import android.graphics.Paint.Style;
 
 public class MeasuringLine extends MeasuringObject {
     private static final int LINE_DRAW_WIDTH = 10;
-    private static final int LINE_SELECT_WIDTH = 20;
+    private static final int LINE_SELECT_WIDTH = 50;
     private static final float BOUNDARY_POINT_CIRCLE_RADIUS = 10.0f;
 
     private static final int TEXT_COLOR = Color.GREEN;

@@ -107,6 +107,7 @@ public abstract class MeasuringMode implements OnTouchListener{
     protected void startLongPressCheck(View view) {
         view.postDelayed(mCheckForLongPress, 
                 ViewConfiguration.getLongPressTimeout());
+        view.postInvalidateDelayed(ViewConfiguration.getLongPressTimeout() + 10);
     }
     
     protected void cancelLongPressCheck(View view) {

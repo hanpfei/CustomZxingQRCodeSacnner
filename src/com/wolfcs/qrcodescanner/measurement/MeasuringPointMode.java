@@ -72,7 +72,7 @@ public class MeasuringPointMode extends MeasuringMode {
                         }
                     } else {
                         mSelectedPoints.add(mSelectedPoint);
-                        if(mSelectedPoints.size() ==1) {
+                        if (mSelectedPoints.size() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
@@ -80,7 +80,7 @@ public class MeasuringPointMode extends MeasuringMode {
                     notifyPointPositionChange(mSelectedPoint);
                 }
                 mSelectedPoint = null;
-            } else {
+            } else if (!isMoved) {
                 MeasuringPoint point = createNewMeasuringPoint();
                 if (point != null) {
                     point.setPosition(x, y);

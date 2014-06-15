@@ -21,6 +21,9 @@ public class MeasuringLineMode extends MeasuringMode {
     private Vector<MeasuringLine> mUsableMeasuringLines;
     private Vector<MeasuringLine> mSelectedMeasuringLines;
 
+    private boolean mIsMoved;
+    private boolean mCurrentCreatedLine;
+
     enum EndpointType {
         START_POINT, STOP_POINT, NONE
     };
@@ -53,7 +56,7 @@ public class MeasuringLineMode extends MeasuringMode {
             mTrackPoint.y = (int) event.getY();
             mTouchDownPoint.x = (int) event.getX();
             mTouchDownPoint.y = (int) event.getY();
-
+            mIsMoved = false;
             mCurrentMeasuringLine = selectMeasuringLine(event.getX(), event.getY());
             if (mCurrentMeasuringLine != null && mOpMeasuringLine == null) {
                 startLongPressCheck(view);
@@ -61,6 +64,8 @@ public class MeasuringLineMode extends MeasuringMode {
             if (mOpMeasuringLine != null) {
                 mEndpointType = selectEndpoint(mOpMeasuringLine,
                         event.getX(), event.getY());
+            } else {
+                mCurrentCreatedLine = true;
             }
             break;
 
@@ -72,26 +77,44 @@ public class MeasuringLineMode extends MeasuringMode {
             if (Math.abs(dx) > MOVE_THREASHOLD || Math.abs(dy) > MOVE_THREASHOLD) {
                 mTrackPoint.x = (int) xPostion;
                 mTrackPoint.y = (int) yPosition;
-            }
-            if (mEndpointType != EndpointType.NONE) {
-                if (mEndpointType == EndpointType.START_POINT) {
-                    mOpMeasuringLine.moveStartPoint(dx, dy);
-                } else if (mEndpointType == EndpointType.STOP_POINT) {
-                    mOpMeasuringLine.moveStopPoint(dx, dy);
-                }
-            } else if (mCurrentMeasuringLine != null) {
+                mIsMoved = true;
                 cancelLongPressCheck(view);
-                mCurrentMeasuringLine.move(dx, dy);
+                if (mEndpointType != EndpointType.NONE) {
+                    if (mEndpointType == EndpointType.START_POINT) {
+                        mOpMeasuringLine.moveStartPoint(dx, dy);
+                    } else if (mEndpointType == EndpointType.STOP_POINT) {
+                        mOpMeasuringLine.moveStopPoint(dx, dy);
+                    }
+                } else if (mCurrentMeasuringLine != null) {
+                    mCurrentMeasuringLine.move(dx, dy);
+                }
             }
             break;
 
         case MotionEvent.ACTION_UP:
+            cancelLongPressCheck(view);
             if (mCurrentMeasuringLine == null) {
                 mCurrentMeasuringLine = createNewMeasuringLine();
+                mCurrentCreatedLine = false;
                 if (mCurrentMeasuringLine != null) {
                     mCurrentMeasuringLine.setPosition(mTouchDownPoint.x, mTouchDownPoint.y, 
                             event.getX(), event.getY());
                     mUsingMeasuringLines.add(mCurrentMeasuringLine);
+                }
+            } else {
+                if (!mIsMoved) {
+                    if (mSelectedMeasuringLines.contains(mCurrentMeasuringLine)
+                            && mOpMeasuringLine == null) {
+                        mSelectedMeasuringLines.remove(mCurrentMeasuringLine);
+                        if (mSelectedMeasuringLines.size() == 0) {
+                            performMeasuringObjectsDeSelected();
+                        }
+                    } else {
+                        mSelectedMeasuringLines.add(mCurrentMeasuringLine);
+                        if (mSelectedMeasuringLines.size() == 1) {
+                            performMeasuringObjectsSelected();
+                        }
+                    }
                 }
             }
             mEndpointType = EndpointType.NONE;
@@ -151,7 +174,7 @@ public class MeasuringLineMode extends MeasuringMode {
             mOpMeasuringLine.drawOperatedObjectOnView(canvas);
         }
         if (mUsingMeasuringLines.size() < mMaxMeasuringLineNum
-                && mCurrentMeasuringLine == null) {
+                && mCurrentCreatedLine) {
             MeasuringLine.drawLine(canvas, mTouchDownPoint.x,
                     mTouchDownPoint.y, mTrackPoint.x, mTrackPoint.y);
         }

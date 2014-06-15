@@ -11,7 +11,7 @@ public class MeasuringPoint extends MeasuringObject {
     private static final float POINT_RADIUS = 10.0f;
     private static final int POINT_SIZE = 50;
 
-    private int mMeasuredPointIndex;
+    private final int mMeasuredPointIndex;
     public Point mPosition;
 
     private Paint mPointPaint;
@@ -24,7 +24,6 @@ public class MeasuringPoint extends MeasuringObject {
 
         mPointPaint = new Paint();
         mPointPaint.setColor(POINT_COLOR);
-        mPointPaint.setStyle(Paint.Style.STROKE);
         mPointPaint.setStrokeWidth(2.0f);
 
         mSelectedPointPaint = new Paint();
@@ -39,27 +38,49 @@ public class MeasuringPoint extends MeasuringObject {
     }
 
     private void drawCrosshair(Canvas canvas, Paint paint) {
-        float startX = mPosition.x - 15;
+        Paint.Style style = paint.getStyle();
+        paint.setStyle(Paint.Style.STROKE);
+        float startX = mPosition.x - 17;
         float startY = mPosition.y;
-        float stopX = mPosition.x + 15;
+        float stopX = mPosition.x - 10;
         float stopY = mPosition.y;
         canvas.drawLine(startX, startY, stopX, stopY, paint);
-        startX = mPosition.x;
-        startY = mPosition.y - 15;
-        stopX = mPosition.x;
-        stopY = mPosition.y + 15;
+        startX = mPosition.x + 10;
+        startY = mPosition.y;
+        stopX = mPosition.x + 17;
+        stopY = mPosition.y;
         canvas.drawLine(startX, startY, stopX, stopY, paint);
+        startX = mPosition.x;
+        startY = mPosition.y - 17;
+        stopX = mPosition.x;
+        stopY = mPosition.y - 10;
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        startX = mPosition.x;
+        startY = mPosition.y + 10;
+        stopX = mPosition.x;
+        stopY = mPosition.y + 17;
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        paint.setStyle(style);
+    }
+
+    private void drawCircle(Canvas canvas, Paint paint) {
+        Paint.Style style = paint.getStyle();
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawCircle(mPosition.x, mPosition.y, POINT_RADIUS, paint);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawCircle(mPosition.x, mPosition.y, 2.0f, paint);
+        paint.setStyle(style);
     }
 
     @Override
     public void drawOnView(Canvas canvas) {
-        canvas.drawCircle(mPosition.x, mPosition.y, POINT_RADIUS, mPointPaint);
+        drawCircle(canvas, mPointPaint);
         drawCrosshair(canvas, mPointPaint);
     }
 
     @Override
     public void drawSelectedOnView(Canvas canvas) {
-        canvas.drawCircle(mPosition.x, mPosition.y, POINT_RADIUS, mSelectedPointPaint);
+        drawCircle(canvas, mSelectedPointPaint);
         drawCrosshair(canvas, mSelectedPointPaint);
     }
 

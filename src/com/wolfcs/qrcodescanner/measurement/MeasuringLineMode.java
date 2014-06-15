@@ -58,14 +58,16 @@ public class MeasuringLineMode extends MeasuringMode {
             mTouchDownPoint.y = (int) event.getY();
             mIsMoved = false;
             mCurrentMeasuringLine = selectMeasuringLine(event.getX(), event.getY());
-            if (mCurrentMeasuringLine != null && mOpMeasuringLine == null) {
-                startLongPressCheck(view);
-            }
-            if (mOpMeasuringLine != null) {
-                mEndpointType = selectEndpoint(mOpMeasuringLine,
-                        event.getX(), event.getY());
+
+            if (mOpMeasuringLine == null) {
+                if (mCurrentMeasuringLine == null) {
+                    mCurrentCreatedLine = true;
+                } else {
+                    startLongPressCheck(view);
+                }
             } else {
-                mCurrentCreatedLine = true;
+                mEndpointType = selectEndpoint(mOpMeasuringLine, event.getX(),
+                        event.getY());
             }
             break;
 

@@ -8,7 +8,7 @@ import android.graphics.Point;
 
 public class MeasuringPoint extends MeasuringObject {
     private static final int POINT_COLOR = Color.WHITE;
-    private static final float POINT_RADIUS = 20.0f;
+    private static final float POINT_RADIUS = 10.0f;
     private static final int POINT_SIZE = 50;
 
     private int mMeasuredPointIndex;
@@ -24,8 +24,13 @@ public class MeasuringPoint extends MeasuringObject {
 
         mPointPaint = new Paint();
         mPointPaint.setColor(POINT_COLOR);
+        mPointPaint.setStyle(Paint.Style.STROKE);
+        mPointPaint.setStrokeWidth(2.0f);
+
         mSelectedPointPaint = new Paint();
         mSelectedPointPaint.setColor(Color.YELLOW);
+        mSelectedPointPaint.setStyle(Paint.Style.STROKE);
+        mSelectedPointPaint.setStrokeWidth(3.0f);
     }
 
     @Override
@@ -33,14 +38,29 @@ public class MeasuringPoint extends MeasuringObject {
 
     }
 
+    private void drawCrosshair(Canvas canvas, Paint paint) {
+        float startX = mPosition.x - 15;
+        float startY = mPosition.y;
+        float stopX = mPosition.x + 15;
+        float stopY = mPosition.y;
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
+        startX = mPosition.x;
+        startY = mPosition.y - 15;
+        stopX = mPosition.x;
+        stopY = mPosition.y + 15;
+        canvas.drawLine(startX, startY, stopX, stopY, paint);
+    }
+
     @Override
     public void drawOnView(Canvas canvas) {
         canvas.drawCircle(mPosition.x, mPosition.y, POINT_RADIUS, mPointPaint);
+        drawCrosshair(canvas, mPointPaint);
     }
 
     @Override
     public void drawSelectedOnView(Canvas canvas) {
         canvas.drawCircle(mPosition.x, mPosition.y, POINT_RADIUS, mSelectedPointPaint);
+        drawCrosshair(canvas, mSelectedPointPaint);
     }
 
     @Override
@@ -55,7 +75,7 @@ public class MeasuringPoint extends MeasuringObject {
 
     @Override
     public boolean containOnViewPoint(float xPosition, float yPosition) {
-        if(distanceTo((int)xPosition, (int)yPosition) < POINT_SIZE) {
+        if (distanceTo((int) xPosition, (int) yPosition) < POINT_SIZE) {
             return true;
         }
         return false;

@@ -1,37 +1,24 @@
 package com.wolfcs.qrcodescanner.measurement;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Point;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
 public class MeasuringPointMode extends MeasuringMode {
-    private static final String TAG = "TempMeasurePointMode";
-
     private static final int TOUCH_SLOP = 20;
-
-    private final int mMaxMeasuringPointNum;
-
-    private ArrayList<MeasuringPoint> mUsingPoints;
-    private ArrayList<MeasuringPoint> mUsablePoints;
-    private ArrayList<MeasuringPoint> mSelectedPoints;
 
     private int mLastMotionX, mLastMotionY; 
     private boolean isMoved;
 
     private MeasuringPoint mSelectedPoint;
+    private MeasuringObjectsManager mMeasuringObjectsManager;
 
     public MeasuringPointMode(Context context, int maxMeasuringPoint) {
         super(context);
-        mMaxMeasuringPointNum = maxMeasuringPoint;
-
-        mUsingPoints = new ArrayList<MeasuringPoint>();
-        mUsablePoints = new ArrayList<MeasuringPoint>();
-        mSelectedPoints = new ArrayList<MeasuringPoint>();
+        mMeasuringObjectsManager = MeasuringObjectsManager.getInstance();
+        mMeasuringObjectsManager.setMaxMeasuringPointNum(maxMeasuringPoint);
     }
 
     @Override
@@ -41,13 +28,12 @@ public class MeasuringPointMode extends MeasuringMode {
         int action = event.getAction();
         int x = (int) event.getX();
         int y = (int) event.getY();
-
         switch (action & MotionEvent.ACTION_MASK) {
         case MotionEvent.ACTION_DOWN:
             mLastMotionX = x;
             mLastMotionY = y;
             if(mSelectedPoint == null) {
-                mSelectedPoint = selectUsingPoint(x, y);
+                mSelectedPoint = mMeasuringObjectsManager.selectUsingPoint(x, y);
             }
             isMoved = false;
             break;
@@ -65,14 +51,14 @@ public class MeasuringPointMode extends MeasuringMode {
         case MotionEvent.ACTION_UP:
             if (mSelectedPoint != null) {
                 if (!isMoved) {
-                    if (mSelectedPoints.contains(mSelectedPoint)) {
-                        mSelectedPoints.remove(mSelectedPoint);
-                        if (mSelectedPoints.size() == 0) {
+                    if (mMeasuringObjectsManager.isPointSelected(mSelectedPoint)) {
+                        mMeasuringObjectsManager.deselectPoint(mSelectedPoint);
+                        if (mMeasuringObjectsManager.getSelectedMeasuringPointsSize() == 0) {
                             performMeasuringObjectsDeSelected();
                         }
                     } else {
-                        mSelectedPoints.add(mSelectedPoint);
-                        if (mSelectedPoints.size() == 1) {
+                        mMeasuringObjectsManager.selectPoint(mSelectedPoint);
+                        if (mMeasuringObjectsManager.getSelectedMeasuringPointsSize() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
@@ -81,7 +67,8 @@ public class MeasuringPointMode extends MeasuringMode {
                 }
                 mSelectedPoint = null;
             } else if (!isMoved) {
-                MeasuringPoint point = createNewMeasuringPoint();
+                MeasuringPoint point = mMeasuringObjectsManager
+                        .createNewMeasuringPoint(getContext(), getWidth(), getHeight());
                 if (point != null) {
                     point.setPosition(x, y);
                     notifyPointPositionChange(point);
@@ -100,76 +87,30 @@ public class MeasuringPointMode extends MeasuringMode {
 
     @Override
     public void drawOnView(Canvas canvas) {
-        for(MeasuringPoint point : mUsingPoints) {
-            if(!mSelectedPoints.contains(point)){
-                point.drawOnView(canvas);
-            } else {
-                point.drawSelectedOnView(canvas);
-            }
-        }
+        mMeasuringObjectsManager.drawPointsOnView(canvas);
         if(mSelectedPoint != null) {
             mSelectedPoint.drawSelectedOnView(canvas);
         }
     }
 
-    private MeasuringPoint selectUsingPoint(int x, int y) {
-        for(MeasuringPoint point : mUsingPoints) {
-            if (point.containOnViewPoint(x, y)) {
-                return point;
-            }
-        }
-        return null;
-    }
-    
-    private MeasuringPoint createNewMeasuringPoint() {
-        if(mUsingPoints.size() >= mMaxMeasuringPointNum) {
-            return null;
-        }
-        MeasuringPoint point;
-        if(!mUsablePoints.isEmpty()){
-            point = mUsablePoints.get(0);
-            mUsablePoints.remove(0);
-        } else {
-            point = new MeasuringPoint(getContext(), getWidth(), getHeight(),
-                    mUsingPoints.size());
-        }
-
-        mUsingPoints.add(point);
-        return point;
-    }
-
-    public void recycle(MeasuringPoint point) {
-        mUsablePoints.remove(point);
-        mUsablePoints.add(point);
-    }
-
     @Override
     public void clearSelectedMeasuringObjects() {
-        Log.i(TAG, "clearSelectedMeasuringObjects");
-        for(MeasuringPoint point : mSelectedPoints) {
-            mUsingPoints.remove(point);
-            recycle(point);
-        }
-        mSelectedPoints.clear();
+        mMeasuringObjectsManager.clearSelectedPoints();
         performMeasuringObjectsDeSelected();
     }
 
     @Override
     public void selectAllMeasuringObjects() {
-        for(MeasuringPoint point : mUsingPoints) {
-            if (!mSelectedPoints.contains(point)) {
-                mSelectedPoints.add(point);
-            }
-        }
+        mMeasuringObjectsManager.selectAllUsingPoints();
     }
 
     @Override
     public void cancelOpOnMeasuringObjects() {
-        mSelectedPoints.clear();
+        mMeasuringObjectsManager.cancelOpOnPoints();
     }
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-
+        mMeasuringObjectsManager.drawPointsOnRealWorldObjectImage(canvas);
     }
 }

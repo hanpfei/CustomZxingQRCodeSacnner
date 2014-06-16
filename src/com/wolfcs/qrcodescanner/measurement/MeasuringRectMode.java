@@ -27,13 +27,6 @@ public class MeasuringRectMode extends MeasuringMode {
     private static final int SHAKE_RANGE = 5;
     private static final int RECT_MIN_SIZE = 60;
 
-    private final int mMaxMeasuringRectNum;
-
-    private Vector<MeasuringRect> mUsingMeasuredRects;
-    private Vector<MeasuringRect> mUsableMeasuredRects;
-    private Vector<MeasuringRect> mSelectedMeasuredRects;
-
-    private Paint mPaint;
     private MeasuredRectUpdateListener mListener;
 
     private Rect mCurrentViewRect = null;
@@ -42,28 +35,18 @@ public class MeasuringRectMode extends MeasuringMode {
     private Point mTouchDownPoint = new Point();
     private Point mTrackPoint = new Point();
 
+    private MeasuringObjectsManager mMeasuringObjectsManager;
+
     private MeasuringRect.SelectedSide mSelectedSide = MeasuringRect.SelectedSide.NONE;
 
     public MeasuringRectMode(Context context, int maxMeasuringRectNum) {
         super(context);
-        mMaxMeasuringRectNum = maxMeasuringRectNum;
-        init();
+        mMeasuringObjectsManager = MeasuringObjectsManager.getInstance();
+        mMeasuringObjectsManager.setMaxMeasuringRectNum(maxMeasuringRectNum);
     }
 
     public void setOnMeasuredRectUpdateListener(MeasuredRectUpdateListener listener) {
         mListener = listener;
-    }
-
-    private final void init() {
-        mUsableMeasuredRects = new Vector<MeasuringRect>();
-        mUsingMeasuredRects = new Vector<MeasuringRect>();
-        mSelectedMeasuredRects = new Vector<MeasuringRect>();
-
-        mPaint = new Paint();
-        mPaint.setStyle(Style.STROKE);
-        mPaint.setStrokeWidth(LINE_WIDTH);
-        // Must manually scale the desired text size to match screen density
-        mPaint.setColor(Color.WHITE);
     }
 
     public float getDistance(MotionEvent event) {
@@ -72,26 +55,11 @@ public class MeasuringRectMode extends MeasuringMode {
         return FloatMath.sqrt(x * x + y * y);
     }
 
-    private MeasuringRect selectMeasuredRect(Point point) {
-        MeasuringRect measuredRect = null;
-        synchronized (mUsingMeasuredRects) {
-            for (int i = 0; i < mUsingMeasuredRects.size(); i++) {
-                MeasuringRect rect = mUsingMeasuredRects.get(i);
-                if (rect.containOnViewPoint(point)) {
-                    if(measuredRect == null || measuredRect.getIndex() < rect.getIndex()) {
-                        measuredRect = rect;
-                    }
-                }
-            }
-        }
-        return measuredRect;
-    }
-
     @Override
     protected void onLongPress() {
         performMeasuringObjectsSelected();
         mOperatingMeasuredRect = mCurrentMeasuredRect;
-        mSelectedMeasuredRects.add(mOperatingMeasuredRect);
+        mMeasuringObjectsManager.selectRect(mOperatingMeasuredRect);
         mCurrentMeasuredRect = null;
     }
 
@@ -108,7 +76,7 @@ public class MeasuringRectMode extends MeasuringMode {
             mTouchDownPoint.x = (int) event.getX();
             mTouchDownPoint.y = (int) event.getY();
 
-            MeasuringRect rect = selectMeasuredRect(mTrackPoint);
+            MeasuringRect rect = mMeasuringObjectsManager.selectMeasuredRect(mTrackPoint);
             if (mOperatingMeasuredRect != null) {
                 mSelectedSide = mOperatingMeasuredRect.selecteSide(mTouchDownPoint);
                 if (mSelectedSide == MeasuringRect.SelectedSide.NONE) {
@@ -116,12 +84,10 @@ public class MeasuringRectMode extends MeasuringMode {
                 }
             } else {
                 if (rect == null) {
-                    synchronized (mUsingMeasuredRects) {
-                        if (mUsingMeasuredRects.size() < mMaxMeasuringRectNum) {
-                            mCurrentViewRect = new Rect();
-                            mCurrentViewRect.left = mTrackPoint.x;
-                            mCurrentViewRect.top = mTrackPoint.y;
-                        }
+                    if (mMeasuringObjectsManager.canCreateNewRect()) {
+                        mCurrentViewRect = new Rect();
+                        mCurrentViewRect.left = mTrackPoint.x;
+                        mCurrentViewRect.top = mTrackPoint.y;
                     }
                 } else {
                     mCurrentMeasuredRect = rect;
@@ -187,7 +153,9 @@ public class MeasuringRectMode extends MeasuringMode {
                 if (DEBUG) Log.i(TAG, "mCurrentViewRect: " + mCurrentViewRect.toShortString());
                 if (mCurrentViewRect.right - mCurrentViewRect.left > RECT_MIN_SIZE
                         && mCurrentViewRect.bottom - mCurrentViewRect.top > RECT_MIN_SIZE) {
-                    MeasuringRect measuredRect = createNewMeasuringRect(mPaint);
+                    MeasuringRect measuredRect = mMeasuringObjectsManager
+                            .createNewMeasuringRect(getContext(),
+                                    getWidth(), getHeight());
                     measuredRect.set(mCurrentViewRect.left, mCurrentViewRect.top,
                             mCurrentViewRect.right, mCurrentViewRect.bottom);
                     if (DEBUG) Log.i(TAG, "MeasureRect: " + measuredRect.toString());
@@ -203,21 +171,21 @@ public class MeasuringRectMode extends MeasuringMode {
                 int y = (int)event.getY();
                 if(Math.abs(x - mTouchDownPoint.x) < DRAG_THREASHOLD &&
                         Math.abs(y - mTouchDownPoint.y) < DRAG_THREASHOLD) {
-                    if(mSelectedMeasuredRects.contains(mCurrentMeasuredRect)){
-                        mSelectedMeasuredRects.remove(mCurrentMeasuredRect);
-                        if (mSelectedMeasuredRects.size() == 0) {
+                    if(mMeasuringObjectsManager.isRectSelected(mCurrentMeasuredRect)){
+                        mMeasuringObjectsManager.deselectRect(mCurrentMeasuredRect);
+                        if (mMeasuringObjectsManager.getSelectedMeasuringRectsSize() == 0) {
                             performMeasuringObjectsDeSelected();
                         }
                     } else if (mOperatingMeasuredRect != mCurrentMeasuredRect){
-                        mSelectedMeasuredRects.add(mCurrentMeasuredRect);
-                        if (mSelectedMeasuredRects.size() == 1) {
+                        mMeasuringObjectsManager.selectRect(mCurrentMeasuredRect);
+                        if (mMeasuringObjectsManager.getSelectedMeasuringRectsSize() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
 
                     if(mOperatingMeasuredRect != null) {
                         mOperatingMeasuredRect = null;
-                        mSelectedMeasuredRects.remove(mCurrentMeasuredRect);
+                        mMeasuringObjectsManager.deselectRect(mCurrentMeasuredRect);
                     }
                 } else { // For dragging a existing rectangle.
                     if (mListener != null) {
@@ -242,17 +210,9 @@ public class MeasuringRectMode extends MeasuringMode {
     @Override
     public void drawOnView(Canvas canvas) {
         if (mCurrentViewRect != null) {
-            canvas.drawRect(mCurrentViewRect, mPaint);
+            MeasuringRect.drawRect(canvas, mCurrentViewRect);
         }
-        synchronized (mUsingMeasuredRects) {
-            for (MeasuringRect rect : mUsingMeasuredRects) {
-                if(mSelectedMeasuredRects.contains(rect)) {
-                    rect.drawSelectedOnView(canvas);
-                } else {
-                    rect.drawOnView(canvas);
-                }
-            }
-        }
+        mMeasuringObjectsManager.drawRectsOnView(canvas);
         if (mOperatingMeasuredRect != null) {
             mOperatingMeasuredRect.drawOperatedObjectOnView(canvas);
         }
@@ -260,64 +220,26 @@ public class MeasuringRectMode extends MeasuringMode {
 
     @Override
     public void clearSelectedMeasuringObjects() {
-        synchronized (mUsingMeasuredRects) {
-            for (MeasuringRect rect : mSelectedMeasuredRects) {
-                recycle(rect);
-                mUsingMeasuredRects.remove(rect);
-            }
-            mSelectedMeasuredRects.clear();
-            if (mOperatingMeasuredRect != null) {
-                mOperatingMeasuredRect = null;
-            }
+        mMeasuringObjectsManager.clearSelectedRects();
+        if (mOperatingMeasuredRect != null) {
+            mOperatingMeasuredRect = null;
         }
         performMeasuringObjectsDeSelected();
     }
 
     @Override
     public void selectAllMeasuringObjects() {
-        synchronized (mUsingMeasuredRects) {
-            for (MeasuringRect rect : mUsingMeasuredRects) {
-                if(!mSelectedMeasuredRects.contains(rect)) {
-                    mSelectedMeasuredRects.add(rect);
-                }
-            }
-        }
+       mMeasuringObjectsManager.selectAllRects();
     }
 
     @Override
     public void cancelOpOnMeasuringObjects() {
         mOperatingMeasuredRect = null;
-        mSelectedMeasuredRects.clear();
-    }
-
-    private MeasuringRect createNewMeasuringRect(Paint paint) {
-        synchronized (mUsingMeasuredRects) {
-            if(mUsingMeasuredRects.size() >= mMaxMeasuringRectNum) {
-                return null;
-            }
-            MeasuringRect rect;
-            if(!mUsableMeasuredRects.isEmpty()) {
-                rect = mUsableMeasuredRects.get(0);
-                mUsableMeasuredRects.remove(0);
-            } else {
-                rect = new MeasuringRect(getContext(), paint, mUsingMeasuredRects.size(),
-                        getWidth(), getHeight());
-            }
-            mUsingMeasuredRects.add(rect);
-            return rect;
-        }
+        mMeasuringObjectsManager.cancelOpOnRects();
     }
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        synchronized (mUsingMeasuredRects) {
-            for (MeasuringRect rect : mUsingMeasuredRects) {
-                rect.drawOnRealWorldObjectImage(canvas);
-            }
-        }
-    }
-
-    public void recycle(MeasuringRect rect) {
-        mUsableMeasuredRects.add(rect);
+        mMeasuringObjectsManager.drawRectsOnRealWorldObjectImage(canvas);
     }
 }

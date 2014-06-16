@@ -262,4 +262,13 @@ public class MeasuringRect extends MeasuringObject {
         }
         set(left, top, right, bottom);
     }
+
+    public static void drawRect(Canvas canvas, Rect rect) {
+        Paint paint = new Paint();
+        paint.setStyle(Style.STROKE);
+        paint.setStrokeWidth(LINE_WIDTH);
+        // Must manually scale the desired text size to match screen density
+        paint.setColor(Color.WHITE);
+        canvas.drawRect(rect, paint);
+    }
 }

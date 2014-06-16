@@ -28,6 +28,10 @@ public class MeasuringLine extends MeasuringObject {
     private float mViewMaxTempX;
     private float mViewMaxTempY;
 
+    enum EndpointType {
+        START_POINT, STOP_POINT, NONE
+    };
+
     public MeasuringLine(Context context, int index, int width, int height) {
         super(context, width, height);
         mIndex = index;
@@ -175,5 +179,16 @@ public class MeasuringLine extends MeasuringObject {
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
 
+    }
+
+    public EndpointType selectEndpoint(float xPosition, float yPosition) {
+        if (startPointContainOnViewPoint(xPosition, yPosition)) {
+            return EndpointType.START_POINT;
+        }
+        if (stopPointContainOnViewPoint(xPosition, yPosition)) {
+            return EndpointType.STOP_POINT;
+        }
+
+        return EndpointType.NONE;
     }
 }

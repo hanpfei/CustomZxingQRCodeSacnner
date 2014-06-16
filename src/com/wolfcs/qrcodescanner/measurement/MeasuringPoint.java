@@ -28,7 +28,6 @@ public class MeasuringPoint extends MeasuringObject {
 
         mSelectedPointPaint = new Paint();
         mSelectedPointPaint.setColor(Color.YELLOW);
-        mSelectedPointPaint.setStyle(Paint.Style.STROKE);
         mSelectedPointPaint.setStrokeWidth(3.0f);
     }
 

@@ -229,9 +229,4 @@ public class MeasuringRectMode extends MeasuringMode {
         mOperatingMeasuredRect = null;
         mObjectsManager.cancelOpOnRects();
     }
-
-    @Override
-    public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mObjectsManager.drawRectsOnRealWorldObjectImage(canvas);
-    }
 }

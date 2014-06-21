@@ -41,8 +41,6 @@ public abstract class MeasuringMode implements OnTouchListener{
 
     public abstract void drawOnView(Canvas canvas);
 
-    public abstract void drawOnRealWorldObjectImage(Canvas canvas);
-
     public abstract void clearSelectedMeasuringObjects();
 
     public abstract void selectAllMeasuringObjects();

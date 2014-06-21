@@ -361,4 +361,10 @@ public class MeasuringObjectsManager {
         drawLinesOnView(canvas);
         drawRectsOnView(canvas);
     }
+
+    public void drawOnRealWorldObjectImage(Canvas canvas) {
+        drawPointsOnRealWorldObjectImage(canvas);
+        drawLinesOnRealWorldObjectImage(canvas);
+        drawRectsOnRealWorldObjectImage(canvas);
+    }
 }

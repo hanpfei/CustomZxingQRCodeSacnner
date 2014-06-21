@@ -106,9 +106,4 @@ public class MeasuringPointMode extends MeasuringMode {
     public void cancelOpOnMeasuringObjects() {
         mObjectsManager.cancelOpOnPoints();
     }
-
-    @Override
-    public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mObjectsManager.drawPointsOnRealWorldObjectImage(canvas);
-    }
 }

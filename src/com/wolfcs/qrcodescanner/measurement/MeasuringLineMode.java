@@ -140,9 +140,4 @@ public class MeasuringLineMode extends MeasuringMode {
         mOpMeasuringLine = null;
         mObjectsManager.cancelOpOnLines();
     }
-
-    @Override
-    public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mObjectsManager.drawLinesOnRealWorldObjectImage(canvas);
-    }
 }

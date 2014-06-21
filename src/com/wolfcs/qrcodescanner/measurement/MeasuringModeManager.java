@@ -148,9 +148,7 @@ public class MeasuringModeManager implements OnClickListener,
     }
 
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mPointMode.drawOnRealWorldObjectImage(canvas);
-        mLineMode.drawOnRealWorldObjectImage(canvas);
-        mRectMode.drawOnRealWorldObjectImage(canvas);
+        mObjectsManager.drawOnRealWorldObjectImage(canvas);
     }
 
     public void cancelOpOnMeasuringObjects() {

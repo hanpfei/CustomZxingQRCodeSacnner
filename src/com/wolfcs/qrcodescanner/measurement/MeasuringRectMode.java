@@ -1,14 +1,9 @@
 package com.wolfcs.qrcodescanner.measurement;
 
-import java.util.Vector;
-
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.graphics.Paint.Style;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,14 +30,12 @@ public class MeasuringRectMode extends MeasuringMode {
     private Point mTouchDownPoint = new Point();
     private Point mTrackPoint = new Point();
 
-    private MeasuringObjectsManager mMeasuringObjectsManager;
-
     private MeasuringRect.SelectedSide mSelectedSide = MeasuringRect.SelectedSide.NONE;
 
-    public MeasuringRectMode(Context context, int maxMeasuringRectNum) {
-        super(context);
-        mMeasuringObjectsManager = MeasuringObjectsManager.getInstance();
-        mMeasuringObjectsManager.setMaxMeasuringRectNum(maxMeasuringRectNum);
+    public MeasuringRectMode(Context context,
+            MeasuringObjectsManager objectManager, int maxMeasuringRectNum) {
+        super(context, objectManager);
+        mObjectsManager.setMaxMeasuringRectNum(maxMeasuringRectNum);
     }
 
     public void setOnMeasuredRectUpdateListener(MeasuredRectUpdateListener listener) {
@@ -59,7 +52,7 @@ public class MeasuringRectMode extends MeasuringMode {
     protected void onLongPress() {
         performMeasuringObjectsSelected();
         mOperatingMeasuredRect = mCurrentMeasuredRect;
-        mMeasuringObjectsManager.selectRect(mOperatingMeasuredRect);
+        mObjectsManager.selectRect(mOperatingMeasuredRect);
         mCurrentMeasuredRect = null;
     }
 
@@ -76,7 +69,7 @@ public class MeasuringRectMode extends MeasuringMode {
             mTouchDownPoint.x = (int) event.getX();
             mTouchDownPoint.y = (int) event.getY();
 
-            MeasuringRect rect = mMeasuringObjectsManager.selectMeasuredRect(mTrackPoint);
+            MeasuringRect rect = mObjectsManager.selectMeasuredRect(mTrackPoint);
             if (mOperatingMeasuredRect != null) {
                 mSelectedSide = mOperatingMeasuredRect.selecteSide(mTouchDownPoint);
                 if (mSelectedSide == MeasuringRect.SelectedSide.NONE) {
@@ -84,7 +77,7 @@ public class MeasuringRectMode extends MeasuringMode {
                 }
             } else {
                 if (rect == null) {
-                    if (mMeasuringObjectsManager.canCreateNewRect()) {
+                    if (mObjectsManager.canCreateNewRect()) {
                         mCurrentViewRect = new Rect();
                         mCurrentViewRect.left = mTrackPoint.x;
                         mCurrentViewRect.top = mTrackPoint.y;
@@ -153,7 +146,7 @@ public class MeasuringRectMode extends MeasuringMode {
                 if (DEBUG) Log.i(TAG, "mCurrentViewRect: " + mCurrentViewRect.toShortString());
                 if (mCurrentViewRect.right - mCurrentViewRect.left > RECT_MIN_SIZE
                         && mCurrentViewRect.bottom - mCurrentViewRect.top > RECT_MIN_SIZE) {
-                    MeasuringRect measuredRect = mMeasuringObjectsManager
+                    MeasuringRect measuredRect = mObjectsManager
                             .createNewMeasuringRect(getContext(),
                                     getWidth(), getHeight());
                     measuredRect.set(mCurrentViewRect.left, mCurrentViewRect.top,
@@ -171,21 +164,21 @@ public class MeasuringRectMode extends MeasuringMode {
                 int y = (int)event.getY();
                 if(Math.abs(x - mTouchDownPoint.x) < DRAG_THREASHOLD &&
                         Math.abs(y - mTouchDownPoint.y) < DRAG_THREASHOLD) {
-                    if(mMeasuringObjectsManager.isRectSelected(mCurrentMeasuredRect)){
-                        mMeasuringObjectsManager.deselectRect(mCurrentMeasuredRect);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringRectsSize() == 0) {
+                    if(mObjectsManager.isRectSelected(mCurrentMeasuredRect)){
+                        mObjectsManager.deselectRect(mCurrentMeasuredRect);
+                        if (mObjectsManager.getSelectedMeasuringRectsSize() == 0) {
                             performMeasuringObjectsDeSelected();
                         }
                     } else if (mOperatingMeasuredRect != mCurrentMeasuredRect){
-                        mMeasuringObjectsManager.selectRect(mCurrentMeasuredRect);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringRectsSize() == 1) {
+                        mObjectsManager.selectRect(mCurrentMeasuredRect);
+                        if (mObjectsManager.getSelectedMeasuringRectsSize() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
 
                     if(mOperatingMeasuredRect != null) {
                         mOperatingMeasuredRect = null;
-                        mMeasuringObjectsManager.deselectRect(mCurrentMeasuredRect);
+                        mObjectsManager.deselectRect(mCurrentMeasuredRect);
                     }
                 } else { // For dragging a existing rectangle.
                     if (mListener != null) {
@@ -212,7 +205,6 @@ public class MeasuringRectMode extends MeasuringMode {
         if (mCurrentViewRect != null) {
             MeasuringRect.drawRect(canvas, mCurrentViewRect);
         }
-        mMeasuringObjectsManager.drawRectsOnView(canvas);
         if (mOperatingMeasuredRect != null) {
             mOperatingMeasuredRect.drawOperatedObjectOnView(canvas);
         }
@@ -220,7 +212,7 @@ public class MeasuringRectMode extends MeasuringMode {
 
     @Override
     public void clearSelectedMeasuringObjects() {
-        mMeasuringObjectsManager.clearSelectedRects();
+        mObjectsManager.clearSelectedRects();
         if (mOperatingMeasuredRect != null) {
             mOperatingMeasuredRect = null;
         }
@@ -229,17 +221,17 @@ public class MeasuringRectMode extends MeasuringMode {
 
     @Override
     public void selectAllMeasuringObjects() {
-       mMeasuringObjectsManager.selectAllRects();
+       mObjectsManager.selectAllRects();
     }
 
     @Override
     public void cancelOpOnMeasuringObjects() {
         mOperatingMeasuredRect = null;
-        mMeasuringObjectsManager.cancelOpOnRects();
+        mObjectsManager.cancelOpOnRects();
     }
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mMeasuringObjectsManager.drawRectsOnRealWorldObjectImage(canvas);
+        mObjectsManager.drawRectsOnRealWorldObjectImage(canvas);
     }
 }

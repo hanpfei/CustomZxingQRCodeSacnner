@@ -38,6 +38,7 @@ public class MeasuringModeManager implements OnClickListener,
     private MeasuringPointMode mPointMode;
     private MeasuringLineMode mLineMode;
     private MeasuringRectMode mRectMode;
+    private MeasuringObjectsManager mObjectsManager;
 
     private int mCurrentMeasuringModeIndex;
     private MeasuringMode mCurrentMeasuringMode;
@@ -51,14 +52,15 @@ public class MeasuringModeManager implements OnClickListener,
         mRectView = rectView;
         mRectView.setMeasureTempManager(this);
 
-        mNullMode = new MeasuringNullMode(mContext);
-        mPointMode = new MeasuringPointMode(mContext, 8);
+        mObjectsManager = MeasuringObjectsManager.getInstance();
+        mNullMode = new MeasuringNullMode(mContext, mObjectsManager);
+        mPointMode = new MeasuringPointMode(mContext, mObjectsManager, 8);
         mPointMode.registerOperationListener(mListener);
 
-        mLineMode = new MeasuringLineMode(mContext, 1);
+        mLineMode = new MeasuringLineMode(mContext, mObjectsManager, 1);
         mLineMode.registerOperationListener(mListener);
 
-        mRectMode = new MeasuringRectMode(mContext, 8);
+        mRectMode = new MeasuringRectMode(mContext, mObjectsManager, 8);
         mRectMode.registerOperationListener(mListener);
         mRectMode.setOnMeasuredRectUpdateListener(this);
 
@@ -139,6 +141,7 @@ public class MeasuringModeManager implements OnClickListener,
     }
 
     public void drawOnView(Canvas canvas) {
+        mObjectsManager.drawOnView(canvas);
         mPointMode.drawOnView(canvas);
         mLineMode.drawOnView(canvas);
         mRectMode.drawOnView(canvas);

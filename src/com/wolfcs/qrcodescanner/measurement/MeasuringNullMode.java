@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class MeasuringNullMode extends MeasuringMode {
-    public MeasuringNullMode(Context context) {
-        super(context);
+    public MeasuringNullMode(Context context, MeasuringObjectsManager objectManager) {
+        super(context, objectManager);
     }
 
     @Override

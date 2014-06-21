@@ -15,17 +15,20 @@ public abstract class MeasuringMode implements OnTouchListener{
 
     protected static final int MOVE_THREASHOLD = 5;
 
+    protected final MeasuringObjectsManager mObjectsManager;
+
     private final Context mContext;
     private final String mCeliusStr;
 
     private int mRealWorldObjectImageWidth = 240;
     private int mRealWorldObjectImageHeight = 320;
-    
+
     private int mViewWidth;
     private int mViewHeight;
-    public MeasuringMode(Context context){
+    public MeasuringMode(Context context, MeasuringObjectsManager objectsManager){
         mContext = context;
         mCeliusStr = mContext.getResources().getString(R.string.celcius);
+        mObjectsManager = objectsManager;
     }
 
     protected Context getContext() {

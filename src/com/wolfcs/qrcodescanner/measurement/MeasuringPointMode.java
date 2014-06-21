@@ -13,12 +13,11 @@ public class MeasuringPointMode extends MeasuringMode {
     private boolean isMoved;
 
     private MeasuringPoint mSelectedPoint;
-    private MeasuringObjectsManager mMeasuringObjectsManager;
 
-    public MeasuringPointMode(Context context, int maxMeasuringPoint) {
-        super(context);
-        mMeasuringObjectsManager = MeasuringObjectsManager.getInstance();
-        mMeasuringObjectsManager.setMaxMeasuringPointNum(maxMeasuringPoint);
+    public MeasuringPointMode(Context context,
+            MeasuringObjectsManager objectManager, int maxMeasuringPoint) {
+        super(context, objectManager);
+        mObjectsManager.setMaxMeasuringPointNum(maxMeasuringPoint);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class MeasuringPointMode extends MeasuringMode {
             mLastMotionX = x;
             mLastMotionY = y;
             if(mSelectedPoint == null) {
-                mSelectedPoint = mMeasuringObjectsManager.selectUsingPoint(x, y);
+                mSelectedPoint = mObjectsManager.selectUsingPoint(x, y);
             }
             isMoved = false;
             break;
@@ -51,14 +50,14 @@ public class MeasuringPointMode extends MeasuringMode {
         case MotionEvent.ACTION_UP:
             if (mSelectedPoint != null) {
                 if (!isMoved) {
-                    if (mMeasuringObjectsManager.isPointSelected(mSelectedPoint)) {
-                        mMeasuringObjectsManager.deselectPoint(mSelectedPoint);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringPointsSize() == 0) {
+                    if (mObjectsManager.isPointSelected(mSelectedPoint)) {
+                        mObjectsManager.deselectPoint(mSelectedPoint);
+                        if (mObjectsManager.getSelectedMeasuringPointsSize() == 0) {
                             performMeasuringObjectsDeSelected();
                         }
                     } else {
-                        mMeasuringObjectsManager.selectPoint(mSelectedPoint);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringPointsSize() == 1) {
+                        mObjectsManager.selectPoint(mSelectedPoint);
+                        if (mObjectsManager.getSelectedMeasuringPointsSize() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
@@ -67,7 +66,7 @@ public class MeasuringPointMode extends MeasuringMode {
                 }
                 mSelectedPoint = null;
             } else if (!isMoved) {
-                MeasuringPoint point = mMeasuringObjectsManager
+                MeasuringPoint point = mObjectsManager
                         .createNewMeasuringPoint(getContext(), getWidth(), getHeight());
                 if (point != null) {
                     point.setPosition(x, y);
@@ -87,7 +86,6 @@ public class MeasuringPointMode extends MeasuringMode {
 
     @Override
     public void drawOnView(Canvas canvas) {
-        mMeasuringObjectsManager.drawPointsOnView(canvas);
         if(mSelectedPoint != null) {
             mSelectedPoint.drawSelectedOnView(canvas);
         }
@@ -95,22 +93,22 @@ public class MeasuringPointMode extends MeasuringMode {
 
     @Override
     public void clearSelectedMeasuringObjects() {
-        mMeasuringObjectsManager.clearSelectedPoints();
+        mObjectsManager.clearSelectedPoints();
         performMeasuringObjectsDeSelected();
     }
 
     @Override
     public void selectAllMeasuringObjects() {
-        mMeasuringObjectsManager.selectAllUsingPoints();
+        mObjectsManager.selectAllUsingPoints();
     }
 
     @Override
     public void cancelOpOnMeasuringObjects() {
-        mMeasuringObjectsManager.cancelOpOnPoints();
+        mObjectsManager.cancelOpOnPoints();
     }
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mMeasuringObjectsManager.drawPointsOnRealWorldObjectImage(canvas);
+        mObjectsManager.drawPointsOnRealWorldObjectImage(canvas);
     }
 }

@@ -355,4 +355,10 @@ public class MeasuringObjectsManager {
     public void recycle(MeasuringRect rect) {
         mUsableMeasuredRects.add(rect);
     }
+
+    public void drawOnView(Canvas canvas) {
+        drawPointsOnView(canvas);
+        drawLinesOnView(canvas);
+        drawRectsOnView(canvas);
+    }
 }

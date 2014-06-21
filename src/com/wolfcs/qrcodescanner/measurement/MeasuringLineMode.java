@@ -17,14 +17,13 @@ public class MeasuringLineMode extends MeasuringMode {
 
     private boolean mIsMoved;
     private boolean mCurrentCreatingLine;
-    private MeasuringObjectsManager mMeasuringObjectsManager;
 
     private EndpointType mEndpointType = EndpointType.NONE;
 
-    public MeasuringLineMode(Context context, int maxMeasuringLineNum) {
-        super(context);
-        mMeasuringObjectsManager = MeasuringObjectsManager.getInstance();
-        mMeasuringObjectsManager.setMaxMeasuringLineNum(maxMeasuringLineNum);
+    public MeasuringLineMode(Context context,
+            MeasuringObjectsManager objectManager, int maxMeasuringLineNum) {
+        super(context, objectManager);
+        mObjectsManager.setMaxMeasuringLineNum(maxMeasuringLineNum);
     }
 
     @Override
@@ -43,7 +42,7 @@ public class MeasuringLineMode extends MeasuringMode {
             mTouchDownPoint.x = (int) event.getX();
             mTouchDownPoint.y = (int) event.getY();
             mIsMoved = false;
-            mCurrentMeasuringLine = mMeasuringObjectsManager
+            mCurrentMeasuringLine = mObjectsManager
                     .selectMeasuringLine(event.getX(), event.getY());
             if (mOpMeasuringLine == null) {
                 if (mCurrentMeasuringLine == null) {
@@ -82,7 +81,7 @@ public class MeasuringLineMode extends MeasuringMode {
         case MotionEvent.ACTION_UP:
             cancelLongPressCheck(view);
             if (mCurrentMeasuringLine == null) {
-                mCurrentMeasuringLine = mMeasuringObjectsManager
+                mCurrentMeasuringLine = mObjectsManager
                         .createNewMeasuringLine(getContext(), getWidth(),getHeight());
                 mCurrentCreatingLine = false;
                 if (mCurrentMeasuringLine != null) {
@@ -91,15 +90,15 @@ public class MeasuringLineMode extends MeasuringMode {
                 }
             } else {
                 if (!mIsMoved) {
-                    if (mMeasuringObjectsManager.isLineSelected(mCurrentMeasuringLine)
+                    if (mObjectsManager.isLineSelected(mCurrentMeasuringLine)
                             && mOpMeasuringLine == null) {
-                        mMeasuringObjectsManager.deselectLine(mCurrentMeasuringLine);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringLinesSize() == 0) {
+                        mObjectsManager.deselectLine(mCurrentMeasuringLine);
+                        if (mObjectsManager.getSelectedMeasuringLinesSize() == 0) {
                             performMeasuringObjectsDeSelected();
                         }
                     } else {
-                        mMeasuringObjectsManager.selectLine(mCurrentMeasuringLine);
-                        if (mMeasuringObjectsManager.getSelectedMeasuringLinesSize() == 1) {
+                        mObjectsManager.selectLine(mCurrentMeasuringLine);
+                        if (mObjectsManager.getSelectedMeasuringLinesSize() == 1) {
                             performMeasuringObjectsSelected();
                         }
                     }
@@ -115,11 +114,10 @@ public class MeasuringLineMode extends MeasuringMode {
 
     @Override
     public void drawOnView(Canvas canvas) {
-        mMeasuringObjectsManager.drawLinesOnView(canvas);
         if (mOpMeasuringLine != null) {
             mOpMeasuringLine.drawOperatedObjectOnView(canvas);
         }
-        if (mMeasuringObjectsManager.canCreateNewLine() && mCurrentCreatingLine) {
+        if (mObjectsManager.canCreateNewLine() && mCurrentCreatingLine) {
             MeasuringLine.drawLine(canvas, mTouchDownPoint.x,
                     mTouchDownPoint.y, mTrackPoint.x, mTrackPoint.y);
         }
@@ -127,24 +125,24 @@ public class MeasuringLineMode extends MeasuringMode {
 
     @Override
     public void clearSelectedMeasuringObjects() {
-        mMeasuringObjectsManager.clearSelectedLines();
+        mObjectsManager.clearSelectedLines();
         mOpMeasuringLine = null;
         performMeasuringObjectsDeSelected();
     }
 
     @Override
     public void selectAllMeasuringObjects() {
-        mMeasuringObjectsManager.selectAllLines();
+        mObjectsManager.selectAllLines();
     }
 
     @Override
     public void cancelOpOnMeasuringObjects() {
         mOpMeasuringLine = null;
-        mMeasuringObjectsManager.cancelOpOnLines();
+        mObjectsManager.cancelOpOnLines();
     }
 
     @Override
     public void drawOnRealWorldObjectImage(Canvas canvas) {
-        mMeasuringObjectsManager.drawLinesOnRealWorldObjectImage(canvas);
+        mObjectsManager.drawLinesOnRealWorldObjectImage(canvas);
     }
 }

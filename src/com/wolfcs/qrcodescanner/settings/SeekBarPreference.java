@@ -90,8 +90,7 @@ public class SeekBarPreference extends DialogPreference implements
     }
 
     private float getValueFromProgress(int progress) {
-        float value = ((float) progress) / SEEK_BAR_MAX_VALUE
-                * (mMaxValue - mMinValue);
+        float value = ((float) progress) / SEEK_BAR_MAX_VALUE * (mMaxValue - mMinValue);
         value += mMinValue;
         NumberFormat numFormat = NumberFormat.getInstance();
         numFormat.setMaximumFractionDigits(2);

@@ -39,4 +39,9 @@
         wolfcs:MaxValue="1000"
         wolfcs:DefaultValue="5"
         wolfcs:unit="M" />
+
+    <com.wolfcs.qrcodescanner.settings.DurationPickerPreference
+        android:title="Duration"
+        android:key="duration"
+        />
 </PreferenceScreen>

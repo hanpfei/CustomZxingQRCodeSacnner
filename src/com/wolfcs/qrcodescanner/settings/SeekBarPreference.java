@@ -2,6 +2,8 @@ package com.wolfcs.qrcodescanner.settings;
 
 import com.wolfcs.qrcodescanner.R;
 
+import java.text.NumberFormat;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
@@ -91,6 +93,9 @@ public class SeekBarPreference extends DialogPreference implements
         float value = ((float) progress) / SEEK_BAR_MAX_VALUE
                 * (mMaxValue - mMinValue);
         value += mMinValue;
+        NumberFormat numFormat = NumberFormat.getInstance();
+        numFormat.setMaximumFractionDigits(2);
+        value = Float.parseFloat(numFormat.format(value));
         return value;
     }
 

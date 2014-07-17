@@ -127,25 +127,16 @@ public class MeasuringObjectsManager {
     }
 
     // Line management
-    private static final int LINE_WIDTH = 3;
 
     private int mMaxMeasuringLineNum;
     private Vector<MeasuringLine> mUsingMeasuringLines;
     private Vector<MeasuringLine> mUsableMeasuringLines;
     private Vector<MeasuringLine> mSelectedMeasuringLines;
 
-    private Paint mPaint;
-
     private void initMeasuringLine() {
         mUsingMeasuringLines = new Vector<MeasuringLine>();
         mUsableMeasuringLines = new Vector<MeasuringLine>();
         mSelectedMeasuringLines = new Vector<MeasuringLine>();
-
-        mPaint = new Paint();
-        mPaint.setStyle(Style.STROKE);
-        mPaint.setStrokeWidth(LINE_WIDTH);
-        // Must manually scale the desired text size to match screen density
-        mPaint.setColor(Color.WHITE);
     }
 
     public void setMaxMeasuringLineNum(int maxMeasuringLineNum) {
@@ -239,15 +230,26 @@ public class MeasuringObjectsManager {
     }
 
     // Rect management
+    private static final int LINE_WIDTH = 3;
+
     private int mMaxMeasuringRectNum;
 
     private Vector<MeasuringRect> mUsingMeasuredRects;
     private Vector<MeasuringRect> mUsableMeasuredRects;
     private Vector<MeasuringRect> mSelectedMeasuredRects;
+
+    private Paint mPaint;
+
     private void initMeasuringRect() {
         mUsableMeasuredRects = new Vector<MeasuringRect>();
         mUsingMeasuredRects = new Vector<MeasuringRect>();
         mSelectedMeasuredRects = new Vector<MeasuringRect>();
+
+        mPaint = new Paint();
+        mPaint.setStyle(Style.STROKE);
+        mPaint.setStrokeWidth(LINE_WIDTH);
+        // Must manually scale the desired text size to match screen density
+        mPaint.setColor(Color.WHITE);
     }
 
     public void setMaxMeasuringRectNum(int maxMeasuringRectNum) {

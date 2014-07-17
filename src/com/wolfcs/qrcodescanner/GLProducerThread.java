@@ -143,8 +143,6 @@ public class GLProducerThread extends Thread {
                 break;
             }
 
-            long drawFrameStartTime = System.currentTimeMillis();
-
             boolean drawResult = false;
             if (mRenderer != null) {
                 drawResult = mRenderer.drawFrame();
@@ -155,10 +153,6 @@ public class GLProducerThread extends Thread {
 
             mEgl.eglSwapBuffers(mEglDisplay, mEglSurface);
             //Assert.assertEquals(EGL10.EGL_SUCCESS, mEgl.eglGetError());
-
-            //Log.i(TAG, "Time to draw a frame: "
-            //     + ((System.currentTimeMillis() - drawFrameStartTime) / 1000.0f)
-            //     + " seconds");
         }
 
         destroyGL();

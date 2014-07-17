@@ -8,12 +8,14 @@ import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 public class NumberPickerPreference extends DialogPreference {
     private static final int DEFAULT_MINIMUM_VALUE = 0;
     private static final int DEFAULT_MAXIMUM_VALUE = 0;
 
     private NumberPicker mNumberPicker;
+    private TextView mTextUnit;
     private int mMinimumValue;
     private int mMaximumValue;
     private int mDefaultValue;
@@ -42,7 +44,7 @@ public class NumberPickerPreference extends DialogPreference {
     protected View onCreateDialogView() {
         return View.inflate(getContext(), R.layout.preference_dialog_numberpicker, null);
     }
-    
+
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
@@ -52,6 +54,9 @@ public class NumberPickerPreference extends DialogPreference {
         int value = getSharedPreferences().getInt(getKey(), mDefaultValue);
         getEditor().putInt(getKey(), value).commit();
         mNumberPicker.setValue(value);
+
+        mTextUnit = (TextView) view.findViewById(R.id.number_unit);
+        mTextUnit.setText(mUnit);
     }
 
     @Override
@@ -64,16 +69,16 @@ public class NumberPickerPreference extends DialogPreference {
             }
         }
     }
-    
+
     private void saveValue(int value) {
         getEditor().putInt(getKey(), value).commit();
         notifyChanged();
     }
-    
+
     public int getValue() {
         return getSharedPreferences().getInt(getKey(), mDefaultValue);
     }
-    
+
     public String getUnit() {
         return mUnit;
     }

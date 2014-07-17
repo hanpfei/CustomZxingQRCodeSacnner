@@ -33,7 +33,6 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         mRTCPreference = (NumberPickerPreference) findPreference(RTC_KEY);
         mRTCPreference.setOnPreferenceChangeListener(this);
         String title = mRTCPreference.getTitle().toString();
-        title = title + " (" + getString(R.string.celcius) + ")";
         mRTCPreference.setDialogTitle(title);
         updateNumberPickerPreference(mRTCPreference, mRTCPreference.getValue());
 
@@ -44,7 +43,6 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         mEnvTempPreference = (NumberEditorPreference) findPreference(ENV_TEMP_KEY);
         mEnvTempPreference.setOnPreferenceChangeListener(this);
         title = mEnvTempPreference.getTitle().toString();
-        title = title + " (" + mEnvTempPreference.getUnit() + ")";
         mEnvTempPreference.setDialogTitle(title);
         int envTemp = mEnvTempPreference.getValue();
         mEnvTempPreference.setSummary(envTemp + " " + mEnvTempPreference.getUnit());
@@ -52,8 +50,6 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         mMeasuringDistance = (NumberPickerPreference) findPreference(MEASURING_DISTANCE_KEY);
         mMeasuringDistance.setOnPreferenceChangeListener(this);
         title = mMeasuringDistance.getTitle().toString();
-        String unit = mMeasuringDistance.getUnit();
-        title = title + " (" + unit + ")";
         mMeasuringDistance.setDialogTitle(title);
         updateNumberPickerPreference(mMeasuringDistance, mMeasuringDistance.getValue());
     }

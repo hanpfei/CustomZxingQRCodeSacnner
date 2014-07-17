@@ -94,26 +94,15 @@ public class GLRendererImpl implements GLRenderer {
         glBindTexture(GL_TEXTURE_2D, mTextureId);
         checkGlError();
 
-        long updateTextureStartTime = System.currentTimeMillis();
         Bitmap bitmap = getBitmap();
-        //Log.i(TAG, "Time to get bitmap: "
-        //        + ((System.currentTimeMillis() - updateTextureStartTime) / 1000.0f)
-        //        + " seconds");
         if (bitmap == null) {
             return false;
         }
 
-        updateTextureStartTime = System.currentTimeMillis();
         GLUtils.texImage2D(GL_TEXTURE_2D, 0, GL_RGBA, bitmap, GL_UNSIGNED_BYTE, 0);
         checkGlError();
 
         bitmap.recycle();
-
-        //Log.i(TAG, "Time to update texture: "
-        //    + ((System.currentTimeMillis() - updateTextureStartTime) / 1000.0f)
-        //    + " seconds");
-
-        long displayStartTime = System.currentTimeMillis();
 
         glUseProgram(mProgram);
         checkGlError();

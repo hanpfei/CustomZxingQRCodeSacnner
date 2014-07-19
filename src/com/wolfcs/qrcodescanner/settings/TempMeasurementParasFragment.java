@@ -15,11 +15,15 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
     private static final String ENV_TEMP_KEY = "env_temp";
     private static final String MEASURING_DISTANCE_KEY = "measuring_distance";
 
+    private static final String DURATION_KEY = "duration";
+
     private SeekBarPreference mEmissionFreqPreference;
     private NumberPickerPreference mRTCPreference;
     private SeekBarPreference mOpticalTransmittance;
     private NumberEditorPreference mEnvTempPreference;
     private NumberPickerPreference mMeasuringDistance;
+
+    private DurationPickerPreference mDurationPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,32 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
         title = mMeasuringDistance.getTitle().toString();
         mMeasuringDistance.setDialogTitle(title);
         updateNumberPickerPreference(mMeasuringDistance, mMeasuringDistance.getValue());
+
+        mDurationPreference = (DurationPickerPreference) findPreference(DURATION_KEY);
+        mDurationPreference.setOnPreferenceChangeListener(this);
+        updateDurationPickerPreference(mDurationPreference, null);
+    }
+
+    private void updateDurationPickerPreference(
+            DurationPickerPreference preference, Integer value) {
+        int millis;
+        if (value == null) {
+            millis = preference.getValue();
+        } else {
+            millis = value.intValue();
+        }
+        int minutes = preference.getMinutesInMillis(millis);
+        int seconds = preference.getSecondsInMillis(millis);
+        int leftMillis = preference.getMillisInMillis(millis);
+        String summary = leftMillis + "ms";
+        if (minutes != 0) {
+            summary = minutes + "min " + seconds + "s " + summary;
+        } else {
+            if (seconds != 0) {
+                summary = seconds + "s " + summary;
+            }
+        }
+        preference.setSummary(summary);
     }
 
     private void updateSeekBarPreference(SeekBarPreference preference, Float value) {
@@ -84,6 +114,9 @@ public class TempMeasurementParasFragment extends PreferenceFragment implements
             String unit = mEnvTempPreference.getUnit();
             String summary = value + " " + unit;
             mEnvTempPreference.setSummary(summary);
+            return true;
+        } else if (preference == mDurationPreference) {
+            updateDurationPickerPreference(mDurationPreference, (Integer)newValue);
             return true;
         }
         return false;

@@ -43,7 +43,8 @@
     <com.wolfcs.qrcodescanner.settings.DurationPickerPreference
         android:title="Duration"
         android:key="duration"
+        wolfcs:DefaultValue="400"
+        wolfcs:MaxValue="100000"
         wolfcs:MinValue="200"
-        wolfcs:MaxValue="800"
         />
 </PreferenceScreen>

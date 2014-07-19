@@ -62,15 +62,15 @@ public class DurationPickerPreference extends DialogPreference implements OnValu
         return View.inflate(getContext(), R.layout.preference_dialog_durationpicker, null);
     }
 
-    private int getMinutesInMillis(long millis) {
+    public int getMinutesInMillis(long millis) {
         return (int) (millis / (60 * 1000));
     }
 
-    private int getSecondsInMillis(long millis) {
+    public int getSecondsInMillis(long millis) {
         return (int) ((millis % (60 * 1000)) / 1000);
     }
 
-    private int getMillisInMillis(long millis) {
+    public int getMillisInMillis(long millis) {
         return (int) (millis % 1000);
     }
 
@@ -85,26 +85,27 @@ public class DurationPickerPreference extends DialogPreference implements OnValu
         mMillisPicker = (NumberPicker) view.findViewById(R.id.milliseconds_picker);
         mMillisPicker.setOnValueChangedListener(this);
         mMillisPicker.setMinValue(0);
-        if (mMaximumValue == 0) {
-            mMinPicker.setMaxValue(MINUTES_NATURAL_MAX);
-            mSecondPicker.setMaxValue(SECONDS_NATURAL_MAX);
-            mMillisPicker.setMaxValue(MILLIS_NATURAL_MAX);
-            return;
-        }
-        int maxMinutes = getMinutesInMillis(mMaximumValue);
-        int maxSeconds = getSecondsInMillis(mMaximumValue);
-        int maxMillis = getMillisInMillis(mMaximumValue);
+        mMinPicker.setMaxValue(MINUTES_NATURAL_MAX);
+        mSecondPicker.setMaxValue(SECONDS_NATURAL_MAX);
+        mMillisPicker.setMaxValue(MILLIS_NATURAL_MAX);
+        if (mMaximumValue != 0) {
+            int maxMinutes = getMinutesInMillis(mMaximumValue);
+            int maxSeconds = getSecondsInMillis(mMaximumValue);
+            int maxMillis = getMillisInMillis(mMaximumValue);
 
-        if (maxMinutes != 0) {
-            mMinPicker.setMaxValue(maxMinutes);
-            return;
+            if (maxMinutes != 0) {
+                mMinPicker.setMaxValue(maxMinutes);
+            }else if (maxSeconds != 0) {
+                mMinPicker.setMaxValue(0);
+                mSecondPicker.setMaxValue(maxSeconds);
+            } else {
+                mMinPicker.setMaxValue(0);
+                mSecondPicker.setMaxValue(0);
+                mMillisPicker.setMaxValue(maxMillis);
+                int minMillis = getMillisInMillis(mMinimumValue);
+                mMillisPicker.setMinValue(minMillis);
+            }
         }
-        if (maxSeconds != 0) {
-            mSecondPicker.setMaxValue(maxSeconds);
-        }
-        mMillisPicker.setMaxValue(maxMillis);
-        int minMillis = getMillisInMillis(mMinimumValue);
-        mMillisPicker.setMinValue(minMillis);
 
         int value = getSharedPreferences().getInt(getKey(), mDefaultValue);
         int minutes = getMinutesInMillis(value);
@@ -183,11 +184,17 @@ public class DurationPickerPreference extends DialogPreference implements OnValu
                 minMillis = minMillis == 0 ? minMillis : minMillis - 1;
                 maxMillis = maxMillis == MILLIS_NATURAL_MAX ? maxMillis : maxMillis + 1;
             }
+            mMillisPicker.setMinValue(minMillis);
+            mMillisPicker.setMaxValue(maxMillis);
             if (newVal >= minMillis && newVal <= maxMillis) {
                 return;
             } else {
                 mMillisPicker.setValue(oldVal);
             }
         }
+    }
+
+    public int getValue() {
+        return getSharedPreferences().getInt(getKey(), mDefaultValue);
     }
 }

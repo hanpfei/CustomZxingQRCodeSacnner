@@ -18,6 +18,10 @@ public class DurationPickerPreference extends DialogPreference implements OnValu
     private static final int SECONDS_NATURAL_MAX = 59;
     private static final int MILLIS_NATURAL_MAX = 999;
 
+    private static final int NATURAL_MIN_VALUE = DEFAULT_MIN_VALUE;
+    private static final int NATURAL_MAX_VALUE = ((MINUTES_NATURAL_MAX + 1) * 60 
+            + SECONDS_NATURAL_MAX) * 1000 + MILLIS_NATURAL_MAX;
+
     private NumberPicker mMinPicker;
     private NumberPicker mSecondPicker;
     private NumberPicker mMillisPicker;
@@ -31,10 +35,12 @@ public class DurationPickerPreference extends DialogPreference implements OnValu
 
         TypedArray arr = context.obtainStyledAttributes(attrs, R.styleable.wolfcs);
         int minValue = arr.getInt(R.styleable.wolfcs_MinValue, DEFAULT_MIN_VALUE);
+        if (minValue == DEFAULT_MIN_VALUE) {
+            minValue = NATURAL_MIN_VALUE;
+        }
         int maxValue = arr.getInt(R.styleable.wolfcs_MaxValue, DEFAULT_MAX_VALUE);
-        if (maxValue <= minValue) {
-            minValue = DEFAULT_MIN_VALUE;
-            maxValue = DEFAULT_MAX_VALUE;
+        if (maxValue == DEFAULT_MAX_VALUE) {
+            minValue = NATURAL_MAX_VALUE;
         }
         mMinimumValue = minValue;
         mMaximumValue = maxValue;

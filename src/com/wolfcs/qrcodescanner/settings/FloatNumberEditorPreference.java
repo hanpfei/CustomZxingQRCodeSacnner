@@ -76,7 +76,7 @@ public class FloatNumberEditorPreference extends DialogPreference {
             String valueStr = s.toString();
             int dotIndex = valueStr.lastIndexOf('.');
             int stringLen = valueStr.length();
-            if (dotIndex < stringLen - 3) {
+            if (dotIndex > 0 && dotIndex < stringLen - 3) {
                 s.replace(dotIndex + 3, valueStr.length(), "");
             }
         }

@@ -5,8 +5,10 @@ import com.wolfcs.qrcodescanner.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.preference.DialogPreference;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -56,21 +58,44 @@ public class FloatNumberEditorPreference extends DialogPreference {
         mEditText.setSelection(String.valueOf(value).length());
 
         mEditText.setFilters(new InputFilter[] {mInputFilter});
+        mEditText.addTextChangedListener(mTextWatcher);
     }
+
+    private TextWatcher mTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String valueStr = s.toString();
+            int dotIndex = valueStr.lastIndexOf('.');
+            int stringLen = valueStr.length();
+            if (dotIndex < stringLen - 3) {
+                s.replace(dotIndex + 3, valueStr.length(), "");
+            }
+        }
+    };
 
     private InputFilter mInputFilter = new InputFilter () {
 
         @Override
         public CharSequence filter(CharSequence source, int start, int end,
                 Spanned dest, int dstart, int dend) {
-            String text = mEditText.getText().toString();
             float value = 0;
 
             try {
-                if (!text.equals("")) {
-                    value = Integer.parseInt(text);
+                if (dest.toString().contains(".") && source.subSequence(start, end).equals(".")){
+                    return "";
                 }
-                value = Float.parseFloat(dest.toString() + source.toString());
+                StringBuilder valueStr = new StringBuilder(dest);
+                valueStr.replace(dstart, dend, source.toString());
+                value = Float.parseFloat(valueStr.toString());
             } catch (Exception e) {
                 Log.w(TAG, "parseInt failed: string = " + dest.toString() + source.toString());
             }

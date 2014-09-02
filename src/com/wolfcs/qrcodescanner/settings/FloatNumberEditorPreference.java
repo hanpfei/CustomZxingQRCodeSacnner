@@ -42,7 +42,7 @@ public class FloatNumberEditorPreference extends DialogPreference {
     public FloatNumberEditorPreference(Context context) {
         this(context, null);
     }
-    
+
     @Override
     protected View onCreateDialogView() {
         return View.inflate(getContext(), R.layout.preference_dialog_numbereditor, null);
@@ -87,8 +87,12 @@ public class FloatNumberEditorPreference extends DialogPreference {
         @Override
         public CharSequence filter(CharSequence source, int start, int end,
                 Spanned dest, int dstart, int dend) {
-            float value = 0;
+            float value = mMinimumValue - 1;
 
+            boolean number = source.toString().matches("^[0-9.]*$");
+            if (!number) {
+                return "";
+            }
             try {
                 if (dest.toString().contains(".") && source.subSequence(start, end).equals(".")){
                     return "";
@@ -115,8 +119,11 @@ public class FloatNumberEditorPreference extends DialogPreference {
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
+        String text = mEditText.getText().toString();
+        if (text.equals("")) {
+            return;
+        }
         if (positiveResult) {
-            String text = mEditText.getText().toString();
             float value = Float.valueOf(text);
             if (callChangeListener(value)) {
                 // To save value;

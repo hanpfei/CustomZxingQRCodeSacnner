@@ -66,7 +66,7 @@ public class NumberEditorPreference extends DialogPreference {
         public CharSequence filter(CharSequence source, int start, int end,
                 Spanned dest, int dstart, int dend) {
             String text = mEditText.getText().toString();
-            int value = 0;
+            int value = mMinimumValue - 1;
 
             StringBuilder string = new StringBuilder(dest);
             string.replace(mEditText.getSelectionStart(),

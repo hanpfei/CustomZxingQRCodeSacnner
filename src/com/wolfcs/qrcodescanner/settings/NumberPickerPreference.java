@@ -62,6 +62,7 @@ public class NumberPickerPreference extends DialogPreference {
     @Override
     protected void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
+            mNumberPicker.clearFocus();
             int value = mNumberPicker.getValue();
             if (callChangeListener(value)) {
                 // To save value;
